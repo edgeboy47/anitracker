@@ -1,10 +1,13 @@
-import React, {useEffect, useState} from 'react';
-import './App.css';
+import React, { useEffect, useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import "./App.css";
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import * as client from './api/anilist';
-import Anime, { AnimeSeason } from './api/anime';
+import * as client from "./api/anilist";
+import Anime, { AnimeSeason } from "./api/anime";
+import { Layout } from "./components/Layout";
+import { Home } from "./components/Home";
 
 function App() {
   const [anime, setAnime] = useState<Anime[]>([]);
@@ -19,7 +22,7 @@ function App() {
       appId: process.env.REACT_APP_APP_ID,
       measurementId: process.env.REACT_APP_MEASUREMENT_ID,
     };
-    
+
     const app = initializeApp(firebaseConfig);
     const analytics = getAnalytics(app);
 
@@ -30,18 +33,16 @@ function App() {
     }
 
     search();
-
-    
   }, []);
-  
+
   return (
-    <div className="App">
-      AniTracker
-      {anime.map(anime =>
-        <div key={anime.id}>
-          <h1>{anime.title?.english || anime.title?.romaji || ""}</h1>
-        </div>)}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route element={<Layout />}>
+          <Route path="/" element={<Home />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
