@@ -17,7 +17,9 @@ const StyledHeader = styled.header`
   color: #2e51a2;
   font-weight: 700;
   font-size: 2rem;
-  padding: 1rem 2rem;
+  padding: 1rem;
+  max-width: 2000px;
+  margin: 0 auto;
 `;
 
 const Logo = styled.div`

@@ -13,6 +13,11 @@ export const searchAnime = async (title: String): Promise<Anime[]> => {
             english
           }
           bannerImage
+          coverImage {
+            extraLarge
+            large
+            color
+          }
           season
           seasonYear
           description
@@ -61,6 +66,11 @@ export const getTrendingAnime = async (): Promise<Anime[]> => {
           english
         }
         bannerImage
+        coverImage {
+          extraLarge
+          large
+          color
+        }
         season
         seasonYear
         description
@@ -94,6 +104,11 @@ export const getTrendingAnime = async (): Promise<Anime[]> => {
   return list;
 };
 
+export const getCurrentSeasonalAnime = async (): Promise<Anime[]> => {
+  const { season, year } = getCurrentSeason();
+  return getSeasonalAnime(season, year);
+};
+
 export const getSeasonalAnime = async (
   season: AnimeSeason,
   year: number
@@ -111,6 +126,11 @@ export const getSeasonalAnime = async (
           english
         }
         bannerImage
+        coverImage {
+          extraLarge
+          large
+          color
+        }
         season
         seasonYear
         description
@@ -159,6 +179,11 @@ export const getPopularAnime = async (): Promise<Anime[]> => {
           english
         }
         bannerImage
+        coverImage {
+          extraLarge
+          large
+          color
+        }
         season
         seasonYear
         description
@@ -207,4 +232,21 @@ const queryFetch = async (
       variables: vars,
     }),
   });
+};
+
+export const getCurrentSeason = (): { season: AnimeSeason; year: number } => {
+  const date = new Date();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+  let season: AnimeSeason;
+
+  if (month >= 0 && month <= 2) season = AnimeSeason.Winter;
+  else if (month >= 3 && month <= 5) season = AnimeSeason.Spring;
+  else if (month >= 6 && month <= 8) season = AnimeSeason.Summer;
+  else season = AnimeSeason.Fall;
+
+  return {
+    season: season,
+    year: year,
+  };
 };
