@@ -10,6 +10,7 @@ import {
   Status,
 } from "../features/anime/animeSlice";
 import AnimeList from "./AnimeList";
+import Searchbar from "./Searchbar";
 
 export const Home = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -44,6 +45,7 @@ export const Home = () => {
 
   return (
     <div>
+      <Searchbar />
       <StyledTitle>{`${season} ${year} Anime`}</StyledTitle>
       {renderFromStatus(status)}
     </div>

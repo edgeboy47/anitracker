@@ -20,7 +20,9 @@ const StyledCard = styled.div`
   width: 200px;
 
   img {
-    width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+    width: auto;
     height: auto;
     object-fit: cover;
     border-radius: 4px;
@@ -28,5 +30,6 @@ const StyledCard = styled.div`
 
   span {
     font-weight: 500;
+    margin: 1rem 0;
   }
 `;

@@ -115,7 +115,7 @@ export const getSeasonalAnime = async (
 ): Promise<Anime[]> => {
   const query = `
   query($season: MediaSeason, $seasonYear: Int) {
-    Page(page: 1, perPage: 10) {
+    Page(page: 1, perPage: 5) {
       media(
         season: $season,
         seasonYear: $seasonYear,
