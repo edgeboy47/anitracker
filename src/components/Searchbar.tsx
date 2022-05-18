@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {MdOutlineSearch} from "react-icons/md";
+import { MdOutlineSearch } from "react-icons/md";
 import styled from "styled-components";
 
 const Searchbar = () => {
@@ -9,23 +9,25 @@ const Searchbar = () => {
     <div>
       <StyledSearch>
         <StyledInput
-					type="text"
-					placeholder="Search Anime"
-					value={search}
-					onChange={(e) => setSearch(e.target.value)}
-					onKeyDown={(e) => {
-						if (e.key === "Enter" && search.trim().length > 0) { 
-							console.log(search)
-							// TODO send to search page
-						}
-					 }}
-				/>
-				<MdOutlineSearch onClick={(e) => {
-					if (search.trim().length > 0) {
-						console.log(search)
-						// TODO send to search page
-					}
-				}}/>
+          type="text"
+          placeholder="Search Anime"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && search.trim().length > 0) {
+              console.log(search);
+              // TODO send to search page
+            }
+          }}
+        />
+        <MdOutlineSearch
+          onClick={(e) => {
+            if (search.trim().length > 0) {
+              console.log(search);
+              // TODO send to search page
+            }
+          }}
+        />
       </StyledSearch>
     </div>
   );
@@ -34,19 +36,19 @@ const Searchbar = () => {
 export default Searchbar;
 
 const StyledSearch = styled.div`
-	padding: 1rem;
+  padding: 1rem;
   background: #eff1f7;
   border-radius: 8px;
-	max-width: 80%;
-	margin: 2rem auto;
-	display: flex;
-	align-items: center;
+  max-width: 80%;
+  margin: 2rem auto;
+  display: flex;
+  align-items: center;
 
-	svg {
-		transform: scale(2.5);
-		margin-right: 2rem;
-		cursor: pointer;
-	}
+  svg {
+    transform: scale(2.5);
+    margin-right: 2rem;
+    cursor: pointer;
+  }
 `;
 
 const StyledInput = styled.input`
@@ -55,6 +57,6 @@ const StyledInput = styled.input`
   padding: 0.5rem;
   font-size: 1rem;
   font-weight: 400;
-	background: inherit;
-	flex: 1;
+  background: inherit;
+  flex: 1;
 `;

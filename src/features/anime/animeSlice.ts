@@ -36,16 +36,19 @@ export const getCurrentSeasonalAnime = createAsyncThunk<Anime[]>(
   }
 );
 
+export const searchAnime = createAsyncThunk<Anime[], string>(
+  "anime/search",
+  async (title: string) => {
+    // TODO add search options object
+    return client.searchAnime(title);
+  }
+);
+
 // Slice
 const animeSlice = createSlice({
   name: "anime",
   initialState: initialState,
-  reducers: {
-    getSeasonal: (state) => {},
-    getPopular: (state) => {},
-    getTrending: (state) => {},
-    search: (state) => {},
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getCurrentSeasonalAnime.pending, (state) => {
@@ -56,6 +59,17 @@ const animeSlice = createSlice({
         state.seasonal = action.payload;
       })
       .addCase(getCurrentSeasonalAnime.rejected, (state, action) => {
+        state.status = Status.Error;
+        // state.error = action.error.message;
+      })
+      .addCase(searchAnime.pending, (state) => {
+        state.status = Status.Loading;
+      })
+      .addCase(searchAnime.fulfilled, (state, action) => {
+        state.status = Status.Success;
+        state.search = action.payload;
+      })
+      .addCase(searchAnime.rejected, (state, action) => {
         state.status = Status.Error;
         // state.error = action.error.message;
       });

@@ -9,10 +9,10 @@ import {
   selectStatus,
   Status,
 } from "../features/anime/animeSlice";
-import AnimeList from "./AnimeList";
-import Searchbar from "./Searchbar";
+import AnimeList from "../components/AnimeList";
+import Searchbar from "../components/Searchbar";
 
-export const Home = () => {
+export const HomePage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const status = useSelector(selectStatus);
   const seasonal = useSelector(selectSeasonal);

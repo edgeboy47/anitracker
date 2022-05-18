@@ -1,10 +1,13 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Navbar } from "./Navbar";
 
 export const Header = () => {
   return (
     <StyledHeader>
-      <Logo>AniTracker</Logo>
+      <Logo>
+        <Link to="/">AniTracker</Link>
+      </Logo>
       <Navbar />
     </StyledHeader>
   );
@@ -25,4 +28,8 @@ const StyledHeader = styled.header`
 const Logo = styled.div`
   padding: 1rem;
   cursor: pointer;
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
 `;

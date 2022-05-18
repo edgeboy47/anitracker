@@ -2,6 +2,7 @@ import Anime, { AnimeSeason, Convert } from "./anime";
 
 const url: string = "https://graphql.anilist.co";
 
+// TODO add search options object
 export const searchAnime = async (title: String): Promise<Anime[]> => {
   const query = `
     query ($title: String!) {

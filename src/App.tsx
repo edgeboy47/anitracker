@@ -5,7 +5,8 @@ import "./App.css";
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { Layout } from "./components/Layout";
-import { Home } from "./components/Home";
+import { HomePage } from "./pages/HomePage";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   useEffect(() => {
@@ -28,7 +29,8 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<Home />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/search" element={<SearchPage />} />
         </Route>
       </Routes>
     </BrowserRouter>
