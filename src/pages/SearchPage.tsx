@@ -5,9 +5,10 @@ import { AppDispatch } from "../app/store";
 import AnimeList from "../components/AnimeList";
 import { searchAnime, selectSearch } from "../features/anime/animeSlice";
 
+// const useDebounce
 const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [title, setTitle] = useState("");
+  const [title, setTitle] = useState(searchParams.get('title') || "");
 
   const dispatch = useDispatch<AppDispatch>();
 
@@ -22,19 +23,41 @@ const SearchPage = () => {
     };
   };
 
-  // TODO get search options from query params
   const debouncedSearch = useCallback(
     debounce((title: string) => {
       // dispatch
-      console.log(title);
+      title.length > 0
+        ? setSearchParams({ title: title })
+        : setSearchParams({});
+
       dispatch(searchAnime(title));
     }),
     []
   );
 
+  // Check search params on mount, and dispatch search if any exist
+  // Also runs whenever search params are updated
   useEffect(() => {
-    debouncedSearch(title);
-  }, [debouncedSearch, title]);
+    console.log('in onmount useeffect')
+    if (searchParams.has("title")) {
+      const title = searchParams.get("title");
+      debouncedSearch(title!);
+    }
+  }, [debouncedSearch, searchParams]);
+
+
+  // Update search params whenever title changes
+  // TODO debounce search param updates
+  // TODO fix bug when going from home page to search page via searchbar, then deleting title field one by one
+  useEffect(() => {
+    console.log('in title useeffect')
+    if (title.length > 0) {
+      setSearchParams({ title: title });
+    } else {
+      searchParams.delete('title')
+      setSearchParams(searchParams);
+    }
+  }, [title, setSearchParams, searchParams]);
 
   return (
     <div>
@@ -72,5 +95,13 @@ const SearchPageOptions = ({ value, onChange }: SearchProps) => {
 const SearchResults = () => {
   const searchResults = useSelector(selectSearch);
 
-  return <div>{searchResults && <AnimeList animeList={searchResults} />}</div>;
+  return (
+    <div>
+      {searchResults && searchResults?.length > 0 ? (
+        <AnimeList animeList={searchResults} />
+      ) : (
+        "No Results found"
+      )}
+    </div>
+  );
 };

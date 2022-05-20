@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { MdOutlineSearch } from "react-icons/md";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Searchbar = () => {
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   return (
     <div>
@@ -15,16 +17,14 @@ const Searchbar = () => {
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={(e) => {
             if (e.key === "Enter" && search.trim().length > 0) {
-              console.log(search);
-              // TODO send to search page
+              navigate(`/search?title=${search}`);
             }
           }}
         />
         <MdOutlineSearch
           onClick={(e) => {
             if (search.trim().length > 0) {
-              console.log(search);
-              // TODO send to search page
+              navigate(`/search?title=${search}`);
             }
           }}
         />
