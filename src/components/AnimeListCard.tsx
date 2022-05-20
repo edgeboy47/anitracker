@@ -7,8 +7,8 @@ type Props = {
 const AnimeListCard = ({ anime }: Props) => {
   return (
     <StyledCard>
-      <img src={anime?.coverImage?.large} alt={anime.title!.english} />
-      <span>{anime.title!.english}</span>
+      <img src={anime?.coverImage?.large} alt={anime.title!.english || anime.title!.romaji} />
+      <span>{anime.title!.english || anime.title!.romaji}</span>
     </StyledCard>
   );
 };

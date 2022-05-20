@@ -4,6 +4,8 @@ const url: string = "https://graphql.anilist.co";
 
 // TODO add search options object
 export const searchAnime = async (title: String): Promise<Anime[]> => {
+  if (title.length === 0) return [];
+  
   const query = `
     query ($title: String!) {
       Page(page: 1, perPage: 10) {

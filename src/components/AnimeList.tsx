@@ -21,6 +21,6 @@ export default AnimeList;
 const StyledAnimeList = styled.div`
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
+  gap: 5rem;
   margin-top: 5rem;
 `;

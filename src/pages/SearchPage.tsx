@@ -1,63 +1,43 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
+import { useDebounce } from "../app/hooks";
 import { AppDispatch } from "../app/store";
 import AnimeList from "../components/AnimeList";
 import { searchAnime, selectSearch } from "../features/anime/animeSlice";
 
-// const useDebounce
+
 const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [title, setTitle] = useState(searchParams.get('title') || "");
+  const [title, setTitle] = useState(searchParams.get("title") || "");
+  const debouncedTitle = useDebounce<string>(title);
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const debounce = (fn: Function, delay: number = 1000) => {
-    let timer: number;
-
-    return (...args: any[]) => {
-      window.clearTimeout(timer);
-      timer = window.setTimeout(() => {
-        fn(...args);
-      }, delay);
-    };
-  };
-
-  const debouncedSearch = useCallback(
-    debounce((title: string) => {
-      // dispatch
-      title.length > 0
-        ? setSearchParams({ title: title })
-        : setSearchParams({});
-
-      dispatch(searchAnime(title));
-    }),
-    []
-  );
+  // Update search params whenever title changes, uses debounce
+  useEffect(() => {
+    console.log('in debounced title', debouncedTitle);
+    if (debouncedTitle.length > 0) {
+      setSearchParams({ title: debouncedTitle });
+    }
+    else {
+      setSearchParams({})
+    }
+  }, [debouncedTitle, setSearchParams])
+  
 
   // Check search params on mount, and dispatch search if any exist
   // Also runs whenever search params are updated
   useEffect(() => {
-    console.log('in onmount useeffect')
+    console.log("in onmount useeffect", `searchParams: ${searchParams}`);
     if (searchParams.has("title")) {
       const title = searchParams.get("title");
-      debouncedSearch(title!);
-    }
-  }, [debouncedSearch, searchParams]);
-
-
-  // Update search params whenever title changes
-  // TODO debounce search param updates
-  // TODO fix bug when going from home page to search page via searchbar, then deleting title field one by one
-  useEffect(() => {
-    console.log('in title useeffect')
-    if (title.length > 0) {
-      setSearchParams({ title: title });
+      dispatch(searchAnime(title!));
     } else {
-      searchParams.delete('title')
-      setSearchParams(searchParams);
+      dispatch(searchAnime(""))
     }
-  }, [title, setSearchParams, searchParams]);
+  }, [searchParams, dispatch]);
+
 
   return (
     <div>
