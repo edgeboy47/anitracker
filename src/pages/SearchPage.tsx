@@ -16,7 +16,6 @@ const SearchPage = () => {
 
   // Update search params whenever title changes, uses debounce
   useEffect(() => {
-    console.log('in debounced title', debouncedTitle);
     if (debouncedTitle.length > 0) {
       setSearchParams({ title: debouncedTitle });
     }
@@ -29,7 +28,6 @@ const SearchPage = () => {
   // Check search params on mount, and dispatch search if any exist
   // Also runs whenever search params are updated
   useEffect(() => {
-    console.log("in onmount useeffect", `searchParams: ${searchParams}`);
     if (searchParams.has("title")) {
       const title = searchParams.get("title");
       dispatch(searchAnime(title!));

@@ -7,7 +7,7 @@ export enum Status {
   Loading = "loading",
   Success = "success",
   Error = "error",
-  Initial = "initial",
+  Idle = "idle",
 }
 
 interface AnimeState {
@@ -24,7 +24,7 @@ const initialState: AnimeState = {
   popular: null,
   trending: null,
   search: null,
-  status: Status.Initial,
+  status: Status.Idle,
   error: null,
 };
 

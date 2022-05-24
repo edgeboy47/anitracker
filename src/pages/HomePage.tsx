@@ -19,14 +19,20 @@ export const HomePage = () => {
   const { season, year } = getCurrentSeason();
 
   useEffect(() => {
-    if (status === Status.Initial) dispatch(getCurrentSeasonalAnime());
-  }, [status, dispatch]);
+    // TODO fix bug when seasonal is null and status is success
+    // To reproduce, go to search page, refresh, then go back to home page
+    console.log('in homepage useeffect')
+    if (seasonal === null || status === Status.Idle) {
+      console.log("fetching seasonal anime");
+      dispatch(getCurrentSeasonalAnime());
+    }
+  }, [status, dispatch, seasonal]);
 
   const renderFromStatus = (status: Status): JSX.Element => {
     let element = <div>Loading...</div>;
 
     switch (status) {
-      case Status.Initial:
+      case Status.Idle:
       case Status.Loading:
         break;
 
