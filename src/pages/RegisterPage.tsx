@@ -2,15 +2,25 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const LoginPage = () => {
+const RegisterPage = () => {
   const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState('')
 
   return (
-    <StyledLoginPage>
-      <StyledLoginBox>
-        <h2>Login</h2>
+    <StyledRegisterPage>
+      <StyledRegisterBox>
+        <h2>Register</h2>
         <form action="">
+          <StyledInput
+            type="text"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            placeholder="Username"
+            required
+          />
+
           <StyledInput
             type="email"
             value={email}
@@ -25,20 +35,27 @@ const LoginPage = () => {
             placeholder="Password"
             required
           />
-          <StyledLoginButton>Login</StyledLoginButton>
+          <StyledInput
+            type="password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+            placeholder="Confirm Password"
+            required
+          />
+          <StyledRegisterButton>Register</StyledRegisterButton>
         </form>
         {/* TODO add password recovery*/}
-        <Link to="/register">
-          Not registered? <span>Create an account</span>
+        <Link to="/login">
+          Already registered? <span>Login</span>
         </Link>
-      </StyledLoginBox>
-    </StyledLoginPage>
+      </StyledRegisterBox>
+    </StyledRegisterPage>
   );
 };
 
-const StyledLoginPage = styled.div``;
+const StyledRegisterPage = styled.div``;
 
-const StyledLoginBox = styled.div`
+const StyledRegisterBox = styled.div`
   margin: 0 auto;
   width: 100%;
   max-width: 400px;
@@ -67,9 +84,9 @@ const StyledLoginBox = styled.div`
     text-decoration: none;
     color: inherit;
     font-size: 0.875rem;
-		padding: 1rem 0rem;
-		width: 100%;
-		
+    padding: 1rem 0rem;
+    width: 100%;
+
     span {
       font-weight: 700;
     }
@@ -88,7 +105,7 @@ const StyledInput = styled.input`
   border-radius: 4px;
 `;
 
-const StyledLoginButton = styled.button`
+const StyledRegisterButton = styled.button`
   font: inherit;
   /* width: 5rem; */
   border: none;
@@ -101,4 +118,4 @@ const StyledLoginButton = styled.button`
   cursor: pointer;
 `;
 
-export default LoginPage;
+export default RegisterPage;
