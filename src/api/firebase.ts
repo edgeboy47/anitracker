@@ -1,30 +1,24 @@
-import app, { auth } from "./firebase-config";
-import {
-  createUserWithEmailAndPassword
-} from 'firebase/auth';
+import { auth } from "./firebaseConfig";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
 
-export const signInWithEmailAndPassword = (email: string, password: string) => {
+export const loginInWithEmailAndPassword = async (email: string, password: string) => {
   // TODO
+  const user = await signInWithEmailAndPassword(auth, email, password);
+  return user.user;
 };
 
 export const signInWithGoogle = () => {
   // TODO
 };
 
-export const signOut = () => {
+export const signOut = async () => {
   // TODO
+  await auth.signOut();
 };
 
-export const register = async (
-  email: string,
-  password: string
-) => {
-  // TODO
-  try {
-    const user = await createUserWithEmailAndPassword(auth, email, password);
-  }
-  catch (e) {
-    // TODO error handling
-    console.log('Error creating user:', e);
-  }
+export const register = async (email: string, password: string) => {
+  // TODO error handling
+
+  const user = await createUserWithEmailAndPassword(auth, email, password);
+  return user.user;
 };

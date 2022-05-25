@@ -1,16 +1,45 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { AppDispatch } from "../app/store";
+import {
+  selectAuthError,
+  selectUser,
+  selectAuthIsSuccess,
+  reset,
+  loginWithEmailAndPassword,
+} from "../features/auth/authSlice";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const dispatch = useDispatch<AppDispatch>();
+  const error = useSelector(selectAuthError);
+  const user = useSelector(selectUser);
+  const isSuccess = useSelector(selectAuthIsSuccess);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user || isSuccess) {
+      navigate("/");
+      dispatch(reset());
+    }
+  }, [dispatch, user, navigate, isSuccess]);
+
   return (
     <StyledLoginPage>
       <StyledLoginBox>
         <h2>Login</h2>
-        <form action="">
+        <form
+          action=""
+          onSubmit={(e) => {
+            e.preventDefault();
+            console.log("login form submitted");
+            dispatch(loginWithEmailAndPassword({ email, password }));
+          }}
+        >
           <StyledInput
             type="email"
             value={email}
@@ -27,6 +56,8 @@ const LoginPage = () => {
           />
           <StyledLoginButton>Login</StyledLoginButton>
         </form>
+        {/* TODO stylize error message */}
+        {error}
         {/* TODO add password recovery*/}
         <Link to="/register">
           Not registered? <span>Create an account</span>
@@ -67,9 +98,9 @@ const StyledLoginBox = styled.div`
     text-decoration: none;
     color: inherit;
     font-size: 0.875rem;
-		padding: 1rem 0rem;
-		width: 100%;
-		
+    padding: 1rem 0rem;
+    width: 100%;
+
     span {
       font-weight: 700;
     }

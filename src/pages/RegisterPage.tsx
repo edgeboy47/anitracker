@@ -1,18 +1,44 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch } from "../app/store";
+import { register, reset, selectAuthError, selectAuthIsSuccess, selectUser } from "../features/auth/authSlice";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const dispatch = useDispatch<AppDispatch>();
+  const error = useSelector(selectAuthError)
+  const user = useSelector(selectUser)
+  const isSuccess = useSelector(selectAuthIsSuccess);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user || isSuccess) {
+      navigate("/");
+      dispatch(reset());
+    }
+  }, [dispatch, user, navigate, isSuccess])
 
   return (
     <StyledRegisterPage>
       <StyledRegisterBox>
         <h2>Register</h2>
-        <form action="">
+        <form
+          action=""
+          onSubmit={(e) => {
+            e.preventDefault();
+            console.log('register form submitted')
+            if(password !== confirmPassword){
+              alert('Passwords do not match')
+            }
+
+            dispatch(register({email, password}))
+          }}
+        >
           <StyledInput
             type="text"
             value={username}
@@ -31,6 +57,7 @@ const RegisterPage = () => {
           <StyledInput
             type="password"
             value={password}
+            minLength={8}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
             required
@@ -38,12 +65,15 @@ const RegisterPage = () => {
           <StyledInput
             type="password"
             value={confirmPassword}
+            minLength={8}
             onChange={(e) => setConfirmPassword(e.target.value)}
             placeholder="Confirm Password"
             required
           />
-          <StyledRegisterButton>Register</StyledRegisterButton>
+          <StyledRegisterButton type="submit">Register</StyledRegisterButton>
         </form>
+        {/* TODO stylize error message */}
+        {error}
         {/* TODO add password recovery*/}
         <Link to="/login">
           Already registered? <span>Login</span>
