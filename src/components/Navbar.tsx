@@ -1,11 +1,26 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import { useSelector } from "react-redux";
-import { selectUser } from "../features/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  logout,
+  reset,
+  selectAuthIsSuccess,
+  selectUser,
+} from "../features/auth/authSlice";
+import { AppDispatch } from "../app/store";
+import { useEffect } from "react";
 
 export const Navbar = () => {
   const user = useSelector(selectUser);
+  const isSuccess = useSelector(selectAuthIsSuccess);
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    if (user === null && isSuccess) {
+      dispatch(reset());
+    }
+  }, [dispatch, user, isSuccess]);
 
   return (
     <StyledNavbar>
@@ -14,7 +29,13 @@ export const Navbar = () => {
       </Link>
       <StyledNavbarButton>Watch List</StyledNavbarButton>
       {user ? (
-        <StyledNavbarButton>Logout</StyledNavbarButton>
+        <StyledNavbarButton
+          onClick={() => {
+            dispatch(logout());
+          }}
+        >
+          Logout
+        </StyledNavbarButton>
       ) : (
         <Link to="/login">
           <StyledNavbarButton>Login</StyledNavbarButton>

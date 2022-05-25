@@ -1,5 +1,5 @@
 import { auth } from "./firebaseConfig";
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from "firebase/auth";
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
 export const loginInWithEmailAndPassword = async (email: string, password: string) => {
   // TODO
@@ -11,9 +11,9 @@ export const signInWithGoogle = () => {
   // TODO
 };
 
-export const signOut = async () => {
+export const logout = async () => {
   // TODO
-  await auth.signOut();
+  await signOut(auth);
 };
 
 export const register = async (email: string, password: string) => {

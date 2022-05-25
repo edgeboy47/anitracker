@@ -39,6 +39,10 @@ export const loginWithEmailAndPassword = createAsyncThunk<
   }
 );
 
+export const logout = createAsyncThunk('auth/logout', async () => {
+  return client.logout();
+})
+
 // Slice
 const authSlice = createSlice({
   name: "auth",
@@ -76,6 +80,20 @@ const authSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(loginWithEmailAndPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.error = action.error.message!;
+      })
+      .addCase(logout.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(logout.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = null;
+      })
+      .addCase(logout.rejected, (state, action) => {
         state.isLoading = false;
         state.isSuccess = false;
         state.isError = true;
