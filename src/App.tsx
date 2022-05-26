@@ -8,6 +8,7 @@ import RegisterPage from "./pages/RegisterPage";
 import SearchPage from "./pages/SearchPage";
 
 function App() {
+  
   return (
     <BrowserRouter>
       <Routes>

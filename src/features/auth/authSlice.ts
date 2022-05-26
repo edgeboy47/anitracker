@@ -1,10 +1,9 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { User } from "firebase/auth";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import * as client from "../../api/firebase";
 
 interface AuthState {
-  user: User | null;
+  user: object | null;
   isLoading: boolean;
   isError: boolean;
   error: string;
@@ -12,8 +11,8 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  user: null,
-  isLoading: false,
+  user: null, //TODO get auth state from storage
+  isLoading: true,
   isError: false,
   isSuccess: false,
   error: "",
@@ -22,26 +21,26 @@ const initialState: AuthState = {
 // Async thunks
 type LoginCredentials = { email: string; password: string };
 
-export const register = createAsyncThunk<User, LoginCredentials>(
+export const register = createAsyncThunk<object, LoginCredentials>(
   "auth/register",
-  async ({ email, password }): Promise<User> => {
+  async ({ email, password }): Promise<object> => {
     return client.register(email, password);
   }
 );
 
 export const loginWithEmailAndPassword = createAsyncThunk<
-  User,
+  object,
   LoginCredentials
 >(
   "auth/loginWithEmailAndPassword",
-  async ({ email, password }): Promise<User> => {
+  async ({ email, password }): Promise<object> => {
     return client.loginInWithEmailAndPassword(email, password);
   }
 );
 
-export const logout = createAsyncThunk('auth/logout', async () => {
+export const logout = createAsyncThunk("auth/logout", async () => {
   return client.logout();
-})
+});
 
 // Slice
 const authSlice = createSlice({
@@ -54,6 +53,9 @@ const authSlice = createSlice({
       state.isSuccess = false;
       state.error = "";
     },
+    setUser: (state, action: PayloadAction<object | null>) => {
+      state.user = action.payload;
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -91,7 +93,6 @@ const authSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.user = null;
       })
       .addCase(logout.rejected, (state, action) => {
         state.isLoading = false;
@@ -109,5 +110,5 @@ export const selectAuthIsError = (state: RootState) => state.auth.isError;
 export const selectAuthError = (state: RootState) => state.auth.error;
 export const selectAuthIsSuccess = (state: RootState) => state.auth.isSuccess;
 
-export const { reset } = authSlice.actions;
+export const { reset, setUser } = authSlice.actions;
 export default authSlice.reducer;

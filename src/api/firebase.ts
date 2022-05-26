@@ -4,7 +4,7 @@ import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } f
 export const loginInWithEmailAndPassword = async (email: string, password: string) => {
   // TODO
   const user = await signInWithEmailAndPassword(auth, email, password);
-  return user.user;
+  return user.user.toJSON();
 };
 
 export const signInWithGoogle = () => {
@@ -20,5 +20,5 @@ export const register = async (email: string, password: string) => {
   // TODO error handling
 
   const user = await createUserWithEmailAndPassword(auth, email, password);
-  return user.user;
+  return user.user.toJSON();
 };
