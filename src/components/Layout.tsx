@@ -31,5 +31,5 @@ type LayoutProps = {
 
 const StyledLayout = styled.div<LayoutProps>`
   opacity: ${props => (props.user === null && props.isLoading) ? 0 : 1};
-  transition: opacity ease-in 250ms;
+  transition: opacity ease-in 200ms;
 `

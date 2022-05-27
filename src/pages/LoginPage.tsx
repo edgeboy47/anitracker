@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { AppDispatch } from "../app/store";
+import GoogleSignIn from "../components/GoogleSignIn";
 import {
   selectAuthError,
   selectUser,
@@ -55,6 +56,7 @@ const LoginPage = () => {
             required
           />
           <StyledLoginButton>Login</StyledLoginButton>
+          <GoogleSignIn />
         </form>
         {/* TODO stylize error message */}
         {error}
@@ -121,7 +123,7 @@ const StyledInput = styled.input`
 
 const StyledLoginButton = styled.button`
   font: inherit;
-  /* width: 5rem; */
+  width: 10rem;
   border: none;
   border-radius: 4px;
   background: hsl(200, 87%, 40%);

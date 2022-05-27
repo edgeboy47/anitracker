@@ -38,6 +38,13 @@ export const loginWithEmailAndPassword = createAsyncThunk<
   }
 );
 
+export const loginWithGoogle = createAsyncThunk(
+  "auth/loginWithGoogle",
+  async () => {
+    return client.signInWithGoogle();
+  }
+);
+
 export const logout = createAsyncThunk("auth/logout", async () => {
   return client.logout();
 });
@@ -55,7 +62,7 @@ const authSlice = createSlice({
     },
     setUser: (state, action: PayloadAction<object | null>) => {
       state.user = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -82,6 +89,20 @@ const authSlice = createSlice({
         state.user = action.payload;
       })
       .addCase(loginWithEmailAndPassword.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.isError = true;
+        state.error = action.error.message!;
+      })
+      .addCase(loginWithGoogle.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(loginWithGoogle.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.user = action.payload;
+      })
+      .addCase(loginWithGoogle.rejected, (state, action) => {
         state.isLoading = false;
         state.isSuccess = false;
         state.isError = true;

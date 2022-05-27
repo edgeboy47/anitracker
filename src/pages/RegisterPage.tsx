@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "../app/store";
 import { register, reset, selectAuthError, selectAuthIsSuccess, selectUser } from "../features/auth/authSlice";
+import GoogleSignIn from "../components/GoogleSignIn";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
@@ -71,6 +72,7 @@ const RegisterPage = () => {
             required
           />
           <StyledRegisterButton type="submit">Register</StyledRegisterButton>
+          <GoogleSignIn />
         </form>
         {/* TODO stylize error message */}
         {error}
