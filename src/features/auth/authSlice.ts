@@ -19,12 +19,12 @@ const initialState: AuthState = {
 };
 
 // Async thunks
-type LoginCredentials = { email: string; password: string };
+type LoginCredentials = { email: string; password: string; username?: string };
 
 export const register = createAsyncThunk<object, LoginCredentials>(
   "auth/register",
-  async ({ email, password }): Promise<object> => {
-    return client.register(email, password);
+  async ({ email, password, username }): Promise<object> => {
+    return client.register(email, password, username!);
   }
 );
 

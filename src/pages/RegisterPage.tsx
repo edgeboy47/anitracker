@@ -37,7 +37,7 @@ const RegisterPage = () => {
               alert('Passwords do not match')
             }
 
-            dispatch(register({email, password}))
+            dispatch(register({email, password, username}))
           }}
         >
           <StyledInput
