@@ -18,7 +18,7 @@ export const Layout = () => {
   );
 };
 
-const StyledOutlet = styled.div`
+const StyledOutlet = styled.main`
   padding: 0 2rem;
   max-width: 2000px;
   margin: 0 auto;

@@ -3,18 +3,20 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../api/firebaseConfig";
 
 import animeReducer from "../features/anime/animeSlice";
-import authReducer, { setUser, reset } from "../features/auth/authSlice";
+import authReducer, { setUser, reset, UserInterface } from "../features/auth/authSlice";
+import watchListReducer from "../features/watchlist/watchlistSlice";
 
 const store = configureStore({
   reducer: {
     anime: animeReducer,
     auth: authReducer,
+    watchlist: watchListReducer,
   },
 });
 
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    store.dispatch(setUser(user.toJSON()));
+    store.dispatch(setUser(user.toJSON() as UserInterface));
   } else {
     store.dispatch(setUser(null));
   }

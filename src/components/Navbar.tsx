@@ -27,7 +27,10 @@ export const Navbar = () => {
       <Link to="/search">
         <StyledNavbarButton>Search</StyledNavbarButton>
       </Link>
-      <StyledNavbarButton>Watch List</StyledNavbarButton>
+      <Link to={"/watchlist"}>
+        <StyledNavbarButton>Watch List</StyledNavbarButton>
+      </Link>
+      {/* TODO: Change to show profile icon when user is logged in */}
       {user ? (
         <StyledNavbarButton
           onClick={() => {

@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "./store";
 
 // Found on usehooks.com
 // T is a generic type for value parameter, our case this will be string
@@ -22,3 +24,5 @@ import { useState, useEffect } from "react";
   );
   return debouncedValue;
 }
+
+export const useAppDispatch = () => useDispatch<AppDispatch>()

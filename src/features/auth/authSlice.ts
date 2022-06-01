@@ -2,8 +2,19 @@ import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import * as client from "../../api/firebase";
 
+
+export interface UserInterface {
+  uid: string;
+  email: string;
+  emailVerified: boolean;
+  displayName: string;
+  isAnonymous: boolean;
+  photoURL: string;
+  createdAt: string;
+  lastLoginAt: string;
+}
 interface AuthState {
-  user: object | null;
+  user: UserInterface | null;
   isLoading: boolean;
   isError: boolean;
   error: string;
@@ -60,7 +71,7 @@ const authSlice = createSlice({
       state.isSuccess = false;
       state.error = "";
     },
-    setUser: (state, action: PayloadAction<object | null>) => {
+    setUser: (state, action: PayloadAction<UserInterface | null>) => {
       state.user = action.payload;
     },
   },
@@ -72,7 +83,7 @@ const authSlice = createSlice({
       .addCase(register.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.user = action.payload;
+        state.user = action.payload as UserInterface;
       })
       .addCase(register.rejected, (state, action) => {
         state.isLoading = false;
@@ -86,7 +97,7 @@ const authSlice = createSlice({
       .addCase(loginWithEmailAndPassword.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.user = action.payload;
+        state.user = action.payload as UserInterface;
       })
       .addCase(loginWithEmailAndPassword.rejected, (state, action) => {
         state.isLoading = false;
@@ -100,7 +111,7 @@ const authSlice = createSlice({
       .addCase(loginWithGoogle.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
-        state.user = action.payload;
+        state.user = action.payload as UserInterface;
       })
       .addCase(loginWithGoogle.rejected, (state, action) => {
         state.isLoading = false;

@@ -12,16 +12,34 @@ import {
 import {
   collection,
   addDoc,
+  doc,
+  getDocs,
   Timestamp,
   DocumentData,
   QueryDocumentSnapshot,
+  setDoc,
 } from "firebase/firestore";
+import Anime from "./anime";
 
 interface UserDocument {
   userID: string;
   username: string;
   email: string;
   createdAt: Timestamp;
+}
+
+export enum WatchStatus {
+  Watching = "Watching",
+  Completed = "Completed",
+  Planning = "Planning",
+  Dropped = "Dropped",
+}
+
+export interface WatchListItem {
+  id: number;
+  title: string;
+  imageURL: string;
+  status: WatchStatus;
 }
 
 // AUTH functions
@@ -57,7 +75,6 @@ export const register = async (
     displayName: username,
   });
 
-  // TODO get username from UI
   await createUser(user.user);
   return user.user.toJSON();
 };
@@ -91,8 +108,47 @@ const createUser = async (user: User) => {
       email: user.email ?? "",
     };
 
-    await addDoc<UserDocument>(userCollection, userdoc);
+    await setDoc<UserDocument>(doc(userCollection, user.uid), userdoc)
   } catch (e) {
     console.log("Error creating user:", e);
+  }
+};
+
+export const getUserWatchList = async (userID: string) => {
+  try {
+    // TODO return list of watchlist entries, or empty list
+    const userRef = collection(db, "users");
+    const userDoc = doc(userRef, `/${userID}`);
+    const userWatchlistRef = collection(userDoc, "watchlist");
+
+    const snapshot = await getDocs(userWatchlistRef);
+    console.log("snapshot:", snapshot);
+    const items =  snapshot.docs.map((doc) => {
+      const item: WatchListItem = {
+        id: parseInt(doc.id),
+        title: doc.data().title,
+        imageURL: doc.data().imageURL,
+        status: doc.data().status,
+      }
+
+      return item;
+    });
+
+    console.log('watchlist items:', items);
+    return items;
+  } catch (e) {
+    console.log("Error getting user watch list:", e);
+    return [];
+  }
+};
+
+export const addToWatchList = async (
+  userID: string,
+  anime: Anime,
+  status: WatchStatus
+) => {
+  try {
+  } catch (e) {
+    console.log("Error adding to watch list:", e);
   }
 };
