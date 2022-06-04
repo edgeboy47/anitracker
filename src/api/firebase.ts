@@ -1,4 +1,5 @@
 import { auth, db } from "./firebaseConfig";
+
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
@@ -11,7 +12,6 @@ import {
 
 import {
   collection,
-  addDoc,
   doc,
   getDocs,
   Timestamp,
@@ -19,6 +19,7 @@ import {
   QueryDocumentSnapshot,
   setDoc,
 } from "firebase/firestore";
+
 import Anime from "./anime";
 
 interface UserDocument {
@@ -108,7 +109,7 @@ const createUser = async (user: User) => {
       email: user.email ?? "",
     };
 
-    await setDoc<UserDocument>(doc(userCollection, user.uid), userdoc)
+    await setDoc<UserDocument>(doc(userCollection, user.uid), userdoc);
   } catch (e) {
     console.log("Error creating user:", e);
   }
@@ -123,18 +124,18 @@ export const getUserWatchList = async (userID: string) => {
 
     const snapshot = await getDocs(userWatchlistRef);
     console.log("snapshot:", snapshot);
-    const items =  snapshot.docs.map((doc) => {
+    const items = snapshot.docs.map((doc) => {
       const item: WatchListItem = {
         id: parseInt(doc.id),
         title: doc.data().title,
         imageURL: doc.data().imageURL,
         status: doc.data().status,
-      }
+      };
 
       return item;
     });
 
-    console.log('watchlist items:', items);
+    console.log("watchlist items:", items);
     return items;
   } catch (e) {
     console.log("Error getting user watch list:", e);
@@ -148,6 +149,19 @@ export const addToWatchList = async (
   status: WatchStatus
 ) => {
   try {
+    const userDoc = doc(collection(db, "users"), `/${userID}`);
+
+    const userList = collection(userDoc, "watchlist");
+
+    const item: WatchListItem = {
+      id: anime.id!,
+      title: anime.title?.romaji!,
+      imageURL: anime.coverImage?.large!,
+      status,
+    };
+
+    await setDoc(doc(userList, `/${anime.id!}`), item);
+    return item;
   } catch (e) {
     console.log("Error adding to watch list:", e);
   }

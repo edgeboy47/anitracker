@@ -1,11 +1,10 @@
 import styled from "styled-components";
 import { FcGoogle } from "react-icons/fc";
-import { useDispatch } from "react-redux";
 import { loginWithGoogle } from "../features/auth/authSlice";
-import { AppDispatch } from "../app/store";
+import { useAppDispatch } from "../app/hooks";
 
 const GoogleSignIn = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   const handleClick = () => {
     dispatch(loginWithGoogle());

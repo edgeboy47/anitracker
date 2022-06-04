@@ -1,20 +1,20 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import {
   logout,
   reset,
   selectAuthIsSuccess,
   selectUser,
 } from "../features/auth/authSlice";
-import { AppDispatch } from "../app/store";
 import { useEffect } from "react";
+import { useAppDispatch } from "../app/hooks";
 
 export const Navbar = () => {
   const user = useSelector(selectUser);
   const isSuccess = useSelector(selectAuthIsSuccess);
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     if (user === null && isSuccess) {

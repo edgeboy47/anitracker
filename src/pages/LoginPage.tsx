@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { AppDispatch } from "../app/store";
+import { useAppDispatch } from "../app/hooks";
 import GoogleSignIn from "../components/GoogleSignIn";
 import {
   selectAuthError,
@@ -16,7 +16,7 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const error = useSelector(selectAuthError);
   const user = useSelector(selectUser);
   const isSuccess = useSelector(selectAuthIsSuccess);

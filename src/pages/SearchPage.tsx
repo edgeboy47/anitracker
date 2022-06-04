@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import { useDebounce } from "../app/hooks";
-import { AppDispatch } from "../app/store";
+import { useAppDispatch, useDebounce } from "../app/hooks";
 import AnimeList from "../components/AnimeList";
 import { searchAnime, selectSearch } from "../features/anime/animeSlice";
 
@@ -12,7 +11,7 @@ const SearchPage = () => {
   const [title, setTitle] = useState(searchParams.get("title") || "");
   const debouncedTitle = useDebounce<string>(title);
 
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
 
   // Update search params whenever title changes, uses debounce
   useEffect(() => {

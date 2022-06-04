@@ -1,17 +1,17 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "../app/store";
+import { useSelector } from "react-redux";
 import { register, reset, selectAuthError, selectAuthIsSuccess, selectUser } from "../features/auth/authSlice";
 import GoogleSignIn from "../components/GoogleSignIn";
+import { useAppDispatch } from "../app/hooks";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const error = useSelector(selectAuthError)
   const user = useSelector(selectUser)
   const isSuccess = useSelector(selectAuthIsSuccess);

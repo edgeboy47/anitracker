@@ -9,3 +9,4 @@ A web app used to track what anime you have watched.
 - [React-Router](https://reactrouter.com/)
 - [Redux](https://redux.js.org/)
 - [Styled Components](https://styled-components.com/)
+- [React Icons](https://react-icons.github.io/react-icons/)

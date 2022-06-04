@@ -1,8 +1,7 @@
 import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { getCurrentSeason } from "../api/anilist";
-import { AppDispatch } from "../app/store";
 import {
   getCurrentSeasonalAnime,
   selectSeasonal,
@@ -11,9 +10,10 @@ import {
 } from "../features/anime/animeSlice";
 import AnimeList from "../components/AnimeList";
 import Searchbar from "../components/Searchbar";
+import { useAppDispatch } from "../app/hooks";
 
 export const HomePage = () => {
-  const dispatch = useDispatch<AppDispatch>();
+  const dispatch = useAppDispatch();
   const status = useSelector(selectStatus);
   const seasonal = useSelector(selectSeasonal);
   const { season, year } = getCurrentSeason();

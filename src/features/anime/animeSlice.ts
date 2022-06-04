@@ -48,7 +48,11 @@ export const searchAnime = createAsyncThunk<Anime[], string>(
 const animeSlice = createSlice({
   name: "anime",
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    reset: (state) => {
+      state.status = Status.Idle;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getCurrentSeasonalAnime.pending, (state) => {
@@ -71,7 +75,7 @@ const animeSlice = createSlice({
       })
       .addCase(searchAnime.rejected, (state, action) => {
         state.status = Status.Error;
-        // state.error = action.error.message;
+        state.error = action.error.message ?? "Unknown error";
       });
   },
 });
