@@ -9,6 +9,7 @@ import {
   selectWatchList,
 } from "../features/watchlist/watchlistSlice";
 import { WatchStatus } from "../api/firebase";
+import { useState } from "react";
 
 type Props = {
   anime: Anime;
@@ -18,6 +19,7 @@ const AnimeListCard = ({ anime }: Props) => {
   const user = useSelector(selectUser);
   const watchlist = useSelector(selectWatchList);
   const dispatch = useAppDispatch();
+  const [isDisabled, setIsDisabled] = useState(false);
 
   return (
     <StyledCard>
@@ -29,6 +31,8 @@ const AnimeListCard = ({ anime }: Props) => {
         <StyledControls>
           <div
             onClick={() => {
+              if (isDisabled) return;
+              setIsDisabled(true);
               dispatch(
                 addToWatchList({
                   userID: user.uid,

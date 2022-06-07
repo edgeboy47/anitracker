@@ -123,7 +123,6 @@ export const getUserWatchList = async (userID: string) => {
     const userWatchlistRef = collection(userDoc, "watchlist");
 
     const snapshot = await getDocs(userWatchlistRef);
-    console.log("snapshot:", snapshot);
     const items = snapshot.docs.map((doc) => {
       const item: WatchListItem = {
         id: parseInt(doc.id),
@@ -135,7 +134,6 @@ export const getUserWatchList = async (userID: string) => {
       return item;
     });
 
-    console.log("watchlist items:", items);
     return items;
   } catch (e) {
     console.log("Error getting user watch list:", e);
@@ -156,7 +154,7 @@ export const addToWatchList = async (
     const item: WatchListItem = {
       id: anime.id!,
       title: anime.title?.romaji!,
-      imageURL: anime.coverImage?.large!,
+      imageURL: anime.coverImage?.extraLarge!,
       status,
     };
 
