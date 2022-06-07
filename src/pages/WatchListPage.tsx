@@ -23,7 +23,6 @@ const WatchListPage = () => {
 
   useEffect(() => {
     if (user) {
-      console.log("in watchlistpage useeffect", user);
       dispatch(getUserWatchList(user.uid));
     }
   }, [dispatch, user]);

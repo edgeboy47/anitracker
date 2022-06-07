@@ -18,7 +18,7 @@ const WatchListPageControls = ({ search, setSearch }: Props) => {
 
       <div id="selectDiv">
         <span>Group by Status</span>
-        <select name="status" id="status">
+        <select name="status" id="status" onChange={(e) => console.log(e.target.value)}>
           <option value="All">All</option>
           {Object.values(WatchStatus).map((status) => (
             <option key={status} value={status}>

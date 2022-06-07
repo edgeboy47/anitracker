@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
+import styled from "styled-components";
 import { useAppDispatch, useDebounce } from "../app/hooks";
 import AnimeList from "../components/AnimeList";
 import { searchAnime, selectSearch } from "../features/anime/animeSlice";
-
 
 const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -17,12 +17,10 @@ const SearchPage = () => {
   useEffect(() => {
     if (debouncedTitle.length > 0) {
       setSearchParams({ title: debouncedTitle });
+    } else {
+      setSearchParams({});
     }
-    else {
-      setSearchParams({})
-    }
-  }, [debouncedTitle, setSearchParams])
-  
+  }, [debouncedTitle, setSearchParams]);
 
   // Check search params on mount, and dispatch search if any exist
   // Also runs whenever search params are updated
@@ -31,10 +29,9 @@ const SearchPage = () => {
       const title = searchParams.get("title");
       dispatch(searchAnime(title!));
     } else {
-      dispatch(searchAnime(""))
+      dispatch(searchAnime(""));
     }
   }, [searchParams, dispatch]);
-
 
   return (
     <div>
@@ -56,7 +53,7 @@ const SearchPageOptions = ({ value, onChange }: SearchProps) => {
     <div>
       <div>
         <span>Title</span>
-        <input
+        <StyledInput
           type="text"
           name="title"
           id="title"
@@ -68,6 +65,16 @@ const SearchPageOptions = ({ value, onChange }: SearchProps) => {
     </div>
   );
 };
+
+const StyledInput = styled.input`
+  background: #eff1f7;
+  border-radius: 8px;
+  padding: 1rem;
+  outline: none;
+  border: none;
+  font-size: 1rem;
+  margin: 1rem;
+`;
 
 const SearchResults = () => {
   const searchResults = useSelector(selectSearch);

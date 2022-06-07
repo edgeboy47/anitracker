@@ -35,7 +35,7 @@ const StyledCardText = styled.div`
   bottom: 0;
   width: 100%;
   border-radius: inherit;
-  padding: 0.5rem;
+  padding: 0.75rem;
   background: #111;
   opacity: 0.9;
   color: #eee;
