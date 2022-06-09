@@ -20,6 +20,7 @@ export const HomePage = () => {
 
   useEffect(() => {
     // TODO fix bug when seasonal is null and status is success
+    // TODO fetch user watchlist on initial load
     // To reproduce, go to search page, refresh, then go back to home page
     console.log('in homepage useeffect')
     if (seasonal === null || status === Status.Idle) {
