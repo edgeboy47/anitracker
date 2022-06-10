@@ -40,7 +40,7 @@ const StyledCard = styled.div`
     border-radius: 4px;
   }
 
-  span {
+  > span {
     font-weight: 500;
     padding: 1rem 0;
   }

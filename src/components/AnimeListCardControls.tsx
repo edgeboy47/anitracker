@@ -14,6 +14,7 @@ import {
   selectWatchList,
   updateWatchListEntry,
 } from "../features/watchlist/watchlistSlice";
+import HoverTextIcon from "./HoverTextIcon";
 
 type Props = {
   anime: Anime;
@@ -27,86 +28,75 @@ const AnimeListCardControls = ({ anime }: Props) => {
 
   if (!user) return null;
 
+  // If the anime is not in the user's watchlist
   if (user && watchlist.some((item) => item.id === anime.id) === false) {
     return (
       <ControlsContainer>
         <div className="mainIcon">
           <StyledControls>
-            <div
-              onClick={() => {
-                if (isDisabled) return;
-                setIsDisabled(true);
-                dispatch(
-                  addToWatchList({
-                    userID: user.uid,
-                    anime,
-                    status: WatchStatus.Completed,
-                  })
-                );
-              }}
-            >
-              <AiOutlinePlus />
-            </div>
+            <AiOutlinePlus />
           </StyledControls>
         </div>
         <div className="hidden">
-          <StyledControls>
-            <MdCheck
-              onClick={() => {
-                // TODO display toast when op is successful
-                dispatch(
-                  addToWatchList({
-                    userID: user.uid,
-                    anime,
-                    status: WatchStatus.Completed,
-                  })
-                );
-              }}
-            />
-          </StyledControls>
-          <StyledControls>
-            <AiFillCalendar
-              onClick={() => {
-                dispatch(
-                  addToWatchList({
-                    userID: user.uid,
-                    anime,
-                    status: WatchStatus.Planning,
-                  })
-                );
-              }}
-            />
-          </StyledControls>
-          <StyledControls>
-            <IoMdPlay
-              onClick={() => {
-                dispatch(
-                  addToWatchList({
-                    userID: user.uid,
-                    anime,
-                    status: WatchStatus.Watching,
-                  })
-                );
-              }}
-            />
-          </StyledControls>
-          <StyledControls>
-            <TiCancel
-              onClick={() => {
-                dispatch(
-                  addToWatchList({
-                    userID: user.uid,
-                    anime,
-                    status: WatchStatus.Dropped,
-                  })
-                );
-              }}
-            />
-          </StyledControls>
+          <HoverTextIcon
+            icon={<MdCheck />}
+            onClick={() => {
+              // TODO use isDisabled to prevent multiple clicks
+              dispatch(
+                addToWatchList({
+                  userID: user.uid,
+                  anime,
+                  status: WatchStatus.Completed,
+                })
+              );
+            }}
+            text={"Add To Completed"}
+          />
+          <HoverTextIcon
+            icon={<AiFillCalendar />}
+            onClick={() => {
+              dispatch(
+                addToWatchList({
+                  userID: user.uid,
+                  anime,
+                  status: WatchStatus.Planning,
+                })
+              );
+            }}
+            text="Add To Planning"
+          />
+
+          <HoverTextIcon
+            icon={<IoMdPlay />}
+            onClick={() => {
+              dispatch(
+                addToWatchList({
+                  userID: user.uid,
+                  anime,
+                  status: WatchStatus.Watching,
+                })
+              );
+            }}
+            text="Add To Watching"
+          />
+          <HoverTextIcon
+            icon={<TiCancel />}
+            onClick={() => {
+              dispatch(
+                addToWatchList({
+                  userID: user.uid,
+                  anime,
+                  status: WatchStatus.Dropped,
+                })
+              );
+            }}
+            text="Add To Dropped"
+          />
         </div>
       </ControlsContainer>
     );
   }
+
   // If the anime is already in the user's watchlist
   if (user && watchlist.some((item) => item.id === anime.id) === true) {
     return (
@@ -117,59 +107,59 @@ const AnimeListCardControls = ({ anime }: Props) => {
           </StyledControls>
         </div>
         <div className="hidden">
-          <StyledControls>
-            <MdCheck
-              onClick={() => {
-                // TODO add update function if show is already in watchlist
-                dispatch(
-                  updateWatchListEntry({
-                    userID: user.uid,
-                    anime,
-                    status: WatchStatus.Completed,
-                  })
-                );
-              }}
-            />
-          </StyledControls>
-          <StyledControls>
-            <AiFillCalendar
-              onClick={() => {
-                dispatch(
-                  updateWatchListEntry({
-                    userID: user.uid,
-                    anime,
-                    status: WatchStatus.Planning,
-                  })
-                );
-              }}
-            />
-          </StyledControls>
-          <StyledControls>
-            <IoMdPlay
-              onClick={() => {
-                dispatch(
-                  updateWatchListEntry({
-                    userID: user.uid,
-                    anime,
-                    status: WatchStatus.Watching,
-                  })
-                );
-              }}
-            />
-          </StyledControls>
-          <StyledControls>
-            <TiCancel
-              onClick={() => {
-                dispatch(
-                  updateWatchListEntry({
-                    userID: user.uid,
-                    anime,
-                    status: WatchStatus.Dropped,
-                  })
-                );
-              }}
-            />
-          </StyledControls>
+          <HoverTextIcon
+            icon={<MdCheck />}
+            onClick={() => {
+              dispatch(
+                updateWatchListEntry({
+                  userID: user.uid,
+                  anime,
+                  status: WatchStatus.Completed,
+                })
+              );
+            }}
+            text={"Set To Completed"}
+          />
+          <HoverTextIcon
+            icon={<AiFillCalendar />}
+            onClick={() => {
+              dispatch(
+                updateWatchListEntry({
+                  userID: user.uid,
+                  anime,
+                  status: WatchStatus.Planning,
+                })
+              );
+            }}
+            text="Set To Planning"
+          />
+
+          <HoverTextIcon
+            icon={<IoMdPlay />}
+            onClick={() => {
+              dispatch(
+                updateWatchListEntry({
+                  userID: user.uid,
+                  anime,
+                  status: WatchStatus.Watching,
+                })
+              );
+            }}
+            text="Set To Watching"
+          />
+          <HoverTextIcon
+            icon={<TiCancel />}
+            onClick={() => {
+              dispatch(
+                updateWatchListEntry({
+                  userID: user.uid,
+                  anime,
+                  status: WatchStatus.Dropped,
+                })
+              );
+            }}
+            text="Set To Dropped"
+          />
         </div>
       </ControlsContainer>
     );

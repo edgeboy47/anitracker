@@ -74,8 +74,12 @@ const watchListSlice = createSlice({
       })
       .addCase(updateWatchListEntry.fulfilled, (state, action) => {
         state.status = Status.Success;
-        if (action.payload)
-          state.watchlist = [...state.watchlist, action.payload];
+        if (action.payload) {
+          state.watchlist = state.watchlist.map((item) => {
+            if (action.payload && item.id === action.payload.id) return action.payload;
+            return item;
+          });
+        }
       })
       .addCase(updateWatchListEntry.rejected, (state, action) => {
         state.status = Status.Error;
