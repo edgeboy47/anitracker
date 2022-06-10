@@ -22,7 +22,7 @@ interface AuthState {
 }
 
 const initialState: AuthState = {
-  user: null, //TODO get auth state from storage
+  user: null, 
   isLoading: true,
   isError: false,
   isSuccess: false,

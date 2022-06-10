@@ -12,6 +12,7 @@ import { selectUser } from "../features/auth/authSlice";
 import {
   addToWatchList,
   selectWatchList,
+  updateWatchListEntry,
 } from "../features/watchlist/watchlistSlice";
 
 type Props = {
@@ -52,6 +53,7 @@ const AnimeListCardControls = ({ anime }: Props) => {
           <StyledControls>
             <MdCheck
               onClick={() => {
+                // TODO display toast when op is successful
                 dispatch(
                   addToWatchList({
                     userID: user.uid,
@@ -105,7 +107,7 @@ const AnimeListCardControls = ({ anime }: Props) => {
       </ControlsContainer>
     );
   }
-
+  // If the anime is already in the user's watchlist
   if (user && watchlist.some((item) => item.id === anime.id) === true) {
     return (
       <ControlsContainer>
@@ -120,7 +122,7 @@ const AnimeListCardControls = ({ anime }: Props) => {
               onClick={() => {
                 // TODO add update function if show is already in watchlist
                 dispatch(
-                  addToWatchList({
+                  updateWatchListEntry({
                     userID: user.uid,
                     anime,
                     status: WatchStatus.Completed,
@@ -133,7 +135,7 @@ const AnimeListCardControls = ({ anime }: Props) => {
             <AiFillCalendar
               onClick={() => {
                 dispatch(
-                  addToWatchList({
+                  updateWatchListEntry({
                     userID: user.uid,
                     anime,
                     status: WatchStatus.Planning,
@@ -146,7 +148,7 @@ const AnimeListCardControls = ({ anime }: Props) => {
             <IoMdPlay
               onClick={() => {
                 dispatch(
-                  addToWatchList({
+                  updateWatchListEntry({
                     userID: user.uid,
                     anime,
                     status: WatchStatus.Watching,
@@ -159,7 +161,7 @@ const AnimeListCardControls = ({ anime }: Props) => {
             <TiCancel
               onClick={() => {
                 dispatch(
-                  addToWatchList({
+                  updateWatchListEntry({
                     userID: user.uid,
                     anime,
                     status: WatchStatus.Dropped,

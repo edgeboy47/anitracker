@@ -32,6 +32,13 @@ export const addToWatchList = createAsyncThunk<
   return client.addToWatchList(userID, anime, status);
 });
 
+export const updateWatchListEntry = createAsyncThunk<
+  WatchListItem | undefined,
+  { userID: string; anime: Anime; status: WatchStatus }
+>("watchlist/updatewatchlistentry", async ({ userID, anime, status }) => {
+  return client.updateWatchListEntry(userID, anime, status);
+});
+
 // Slice
 const watchListSlice = createSlice({
   name: "watchlist",
@@ -48,18 +55,29 @@ const watchListSlice = createSlice({
       })
       .addCase(getUserWatchList.rejected, (state, action) => {
         state.status = Status.Error;
-        state.error = action.error.message!;
+        state.error = action.error.message ?? "Unknown Error";
       })
       .addCase(addToWatchList.pending, (state) => {
         state.status = Status.Loading;
       })
       .addCase(addToWatchList.fulfilled, (state, action) => {
         state.status = Status.Success;
-        // TODO add item to watchlist if added successfully
         if (action.payload)
           state.watchlist = [...state.watchlist, action.payload];
       })
       .addCase(addToWatchList.rejected, (state, action) => {
+        state.status = Status.Error;
+        state.error = action.error.message ?? "Unknown Error";
+      })
+      .addCase(updateWatchListEntry.pending, (state) => {
+        state.status = Status.Loading;
+      })
+      .addCase(updateWatchListEntry.fulfilled, (state, action) => {
+        state.status = Status.Success;
+        if (action.payload)
+          state.watchlist = [...state.watchlist, action.payload];
+      })
+      .addCase(updateWatchListEntry.rejected, (state, action) => {
         state.status = Status.Error;
         state.error = action.error.message ?? "Unknown Error";
       });

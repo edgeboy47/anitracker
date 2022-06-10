@@ -18,6 +18,7 @@ import {
   DocumentData,
   QueryDocumentSnapshot,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 
 import Anime from "./anime";
@@ -57,7 +58,6 @@ export const signInWithGoogle = async () => {
   const user = await signInWithPopup(auth, google);
   await createUser(user.user);
   return user.user.toJSON();
-  // TODO create user in firestore
 };
 
 export const logout = async () => {
@@ -117,7 +117,6 @@ const createUser = async (user: User) => {
 
 export const getUserWatchList = async (userID: string) => {
   try {
-    // TODO return list of watchlist entries, or empty list
     const userRef = collection(db, "users");
     const userDoc = doc(userRef, `/${userID}`);
     const userWatchlistRef = collection(userDoc, "watchlist");
@@ -163,4 +162,33 @@ export const addToWatchList = async (
   } catch (e) {
     console.log("Error adding to watch list:", e);
   }
+};
+
+export const updateWatchListEntry = async (
+  userID: string,
+  anime: Anime,
+  status: WatchStatus
+) => {
+  try {
+    const userDoc = doc(collection(db, "users"), `/${userID}`);
+    const userList = collection(userDoc, "watchlist");
+    const watchListDoc = doc(userList, `/${anime.id}`);
+
+    updateDoc(watchListDoc, {
+      status,
+    });
+
+    return {
+      id: anime.id!,
+      title: anime.title?.romaji!,
+      imageURL: anime.coverImage?.extraLarge!,
+      status,
+    };
+  } catch (e) {
+    console.log("Error updating watch list entry:", e);
+  }
+};
+
+export const removeFromWatchList = async () => {
+  // TODO implement
 };
