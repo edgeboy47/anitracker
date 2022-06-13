@@ -19,6 +19,7 @@ import {
   QueryDocumentSnapshot,
   setDoc,
   updateDoc,
+  deleteDoc,
 } from "firebase/firestore";
 
 import Anime from "./anime";
@@ -189,6 +190,15 @@ export const updateWatchListEntry = async (
   }
 };
 
-export const removeFromWatchList = async () => {
-  // TODO implement
+export const removeFromWatchList = async (userID: string, animeID: number) => {
+  try {
+    const userDoc = doc(collection(db, "users"), `/${userID}`);
+    const userList = collection(userDoc, "watchlist");
+    const watchListDoc = doc(userList, `/${animeID}`);
+
+    await deleteDoc(watchListDoc);
+    return animeID;
+  } catch (e) {
+    console.log("Error removing anime from watchlist", e);
+  }
 };

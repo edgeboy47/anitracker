@@ -39,6 +39,13 @@ export const updateWatchListEntry = createAsyncThunk<
   return client.updateWatchListEntry(userID, anime, status);
 });
 
+export const removeFromWatchList = createAsyncThunk<
+  number | undefined,
+  { userID: string; animeID: number }
+>("watchlist/removefromuserwatchlist", async ({ userID, animeID }) => {
+  return client.removeFromWatchList(userID, animeID);
+});
+
 // Slice
 const watchListSlice = createSlice({
   name: "watchlist",
@@ -76,12 +83,28 @@ const watchListSlice = createSlice({
         state.status = Status.Success;
         if (action.payload) {
           state.watchlist = state.watchlist.map((item) => {
-            if (action.payload && item.id === action.payload.id) return action.payload;
+            if (action.payload && item.id === action.payload.id)
+              return action.payload;
             return item;
           });
         }
       })
       .addCase(updateWatchListEntry.rejected, (state, action) => {
+        state.status = Status.Error;
+        state.error = action.error.message ?? "Unknown Error";
+      })
+      .addCase(removeFromWatchList.pending, (state) => {
+        state.status = Status.Loading;
+      })
+      .addCase(removeFromWatchList.fulfilled, (state, action) => {
+        state.status = Status.Success;
+        if (action.payload) {
+          state.watchlist = state.watchlist.filter(
+            (item) => item.id !== action.payload
+          );
+        }
+      })
+      .addCase(removeFromWatchList.rejected, (state, action) => {
         state.status = Status.Error;
         state.error = action.error.message ?? "Unknown Error";
       });
