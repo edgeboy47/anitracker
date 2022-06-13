@@ -1,6 +1,7 @@
 # AniTracker
 
-A web app used to track what anime you have watched. Uses the [AniList GraphQL API](https://anilist.gitbook.io/anilist-apiv2-docs/)
+A web app used to track what anime you have watched. Uses the [AniList GraphQL API](https://anilist.gitbook.io/anilist-apiv2-docs/).
+👉🏾 [Live Preview](https://edgeboy47.github.io/anitracker/)
 
 ### Skills Used:
 - [React](https://reactjs.org/)
