@@ -11,23 +11,36 @@ import {
 import AnimeList from "../components/AnimeList";
 import Searchbar from "../components/Searchbar";
 import { useAppDispatch } from "../app/hooks";
+import { selectUser } from "../features/auth/authSlice";
+import {
+  getUserWatchList,
+  selectWatchList,
+} from "../features/watchlist/watchlistSlice";
 
 export const HomePage = () => {
   const dispatch = useAppDispatch();
   const status = useSelector(selectStatus);
   const seasonal = useSelector(selectSeasonal);
   const { season, year } = getCurrentSeason();
+  const user = useSelector(selectUser);
+  const watchlist = useSelector(selectWatchList);
 
+  // Fetch current seasonal anime if it's not already loaded
   useEffect(() => {
-    // TODO fix bug when seasonal is null and status is success
-    // TODO fetch user watchlist on initial load
-    // To reproduce, go to search page, refresh, then go back to home page
-    console.log('in homepage useeffect')
-    if (seasonal === null || status === Status.Idle) {
+    console.log("in homepage useeffect");
+    if (seasonal === null) {
       console.log("fetching seasonal anime");
       dispatch(getCurrentSeasonalAnime());
     }
-  }, [status, dispatch, seasonal]);
+  }, [dispatch, seasonal]);
+
+  // Fetch user's watchlist if they are logged in and it has not already been fetched
+  useEffect(() => {
+    if (user && watchlist === null) {
+      console.log("fetching user watchlist");
+      dispatch(getUserWatchList(user.uid));
+    }
+  }, [dispatch, user, watchlist]);
 
   const renderFromStatus = (status: Status): JSX.Element => {
     let element = <div>Loading...</div>;
@@ -38,7 +51,7 @@ export const HomePage = () => {
         break;
 
       case Status.Success:
-        element = <AnimeList animeList={seasonal!} />;
+        element = <AnimeList animeList={seasonal ?? []} />;
         break;
 
       case Status.Error:

@@ -6,13 +6,13 @@ import { RootState } from "../../app/store";
 import { Status } from "../anime/animeSlice";
 
 interface WatchListState {
-  watchlist: WatchListItem[];
+  watchlist: WatchListItem[] | null;
   status: Status;
   error: string | null;
 }
 
 const initialState: WatchListState = {
-  watchlist: [],
+  watchlist: null,
   status: Status.Idle,
   error: null,
 };
@@ -69,8 +69,11 @@ const watchListSlice = createSlice({
       })
       .addCase(addToWatchList.fulfilled, (state, action) => {
         state.status = Status.Success;
-        if (action.payload)
-          state.watchlist = [...state.watchlist, action.payload];
+        if (action.payload) {
+          if (state.watchlist)
+            state.watchlist = [...state.watchlist, action.payload];
+          else state.watchlist = [action.payload];
+        }
       })
       .addCase(addToWatchList.rejected, (state, action) => {
         state.status = Status.Error;
@@ -82,11 +85,14 @@ const watchListSlice = createSlice({
       .addCase(updateWatchListEntry.fulfilled, (state, action) => {
         state.status = Status.Success;
         if (action.payload) {
-          state.watchlist = state.watchlist.map((item) => {
-            if (action.payload && item.id === action.payload.id)
-              return action.payload;
-            return item;
-          });
+          if (state.watchlist) {
+            state.watchlist = state.watchlist.map((item) => {
+              if (action.payload && item.id === action.payload.id)
+                return action.payload;
+              return item;
+            });
+          }
+          else state.watchlist = [action.payload];
         }
       })
       .addCase(updateWatchListEntry.rejected, (state, action) => {
@@ -98,7 +104,7 @@ const watchListSlice = createSlice({
       })
       .addCase(removeFromWatchList.fulfilled, (state, action) => {
         state.status = Status.Success;
-        if (action.payload) {
+        if (action.payload && state.watchlist) {
           state.watchlist = state.watchlist.filter(
             (item) => item.id !== action.payload
           );

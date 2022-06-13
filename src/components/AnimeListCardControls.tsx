@@ -29,7 +29,7 @@ const AnimeListCardControls = ({ anime }: Props) => {
   if (!user) return null;
 
   // If the anime is not in the user's watchlist
-  if (user && watchlist.some((item) => item.id === anime.id) === false) {
+  if (user && watchlist && watchlist.some((item) => item.id === anime.id) === false) {
     return (
       <ControlsContainer>
         <div className="mainIcon">
@@ -98,7 +98,7 @@ const AnimeListCardControls = ({ anime }: Props) => {
   }
 
   // If the anime is already in the user's watchlist
-  if (user && watchlist.some((item) => item.id === anime.id) === true) {
+  if (user && watchlist && watchlist.some((item) => item.id === anime.id) === true) {
     return (
       <ControlsContainer>
         <div className="mainIcon">

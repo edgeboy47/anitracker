@@ -35,16 +35,19 @@ const WatchListPage = () => {
     <StyledWatchListPage>
       <WatchListPageControls search={search} setSearch={setSearch} />
       <StyledWatchListContent>
-        {watchListStatus === Status.Loading && <div>Loading...</div>}
+        {watchListStatus === Status.Loading && watchList === null && (
+          <div>Loading...</div>
+        )}
         {watchListStatus === Status.Error && <div>{watchListError}</div>}
-        {watchListStatus === Status.Success && (
+        {(watchListStatus === Status.Success ||
+          (watchListStatus === Status.Loading && watchList)) && (
           <WatchListPageItems
             items={
               search
-                ? watchList.filter((item) =>
+                ? watchList!.filter((item) =>
                     item.title.toLowerCase().includes(search.toLowerCase())
                   )
-                : watchList
+                : watchList!
             }
           />
         )}
