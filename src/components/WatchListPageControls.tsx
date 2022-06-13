@@ -16,6 +16,7 @@ const WatchListPageControls = ({ search, setSearch }: Props) => {
         onChange={(e) => setSearch(e.target.value)}
       />
 
+      {/* TODO Implement filter by watch status */}
       <div id="selectDiv">
         <span>Group by Status</span>
         <select name="status" id="status" onChange={(e) => console.log(e.target.value)}>

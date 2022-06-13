@@ -11,7 +11,7 @@ import WatchListPage from "./pages/WatchListPage";
 function App() {
   
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/anitracker">
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<HomePage />} />
@@ -19,6 +19,7 @@ function App() {
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/watchlist" element={<WatchListPage />} />
+          <Route path="*" element={<div>404</div>} />
         </Route>
       </Routes>
     </BrowserRouter>
