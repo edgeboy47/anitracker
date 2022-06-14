@@ -4,9 +4,16 @@ import { WatchStatus } from "../api/firebase";
 type Props = {
   search: string;
   setSearch: (search: string) => void;
+  watchStatusFilter: "All" | WatchStatus;
+  setWatchStatusFilter: (watchStatusFilter: "All" | WatchStatus) => void;
 };
 
-const WatchListPageControls = ({ search, setSearch }: Props) => {
+const WatchListPageControls = ({
+  search,
+  setSearch,
+  watchStatusFilter,
+  setWatchStatusFilter,
+}: Props) => {
   return (
     <StyledWatchListPageControls>
       <input
@@ -16,10 +23,21 @@ const WatchListPageControls = ({ search, setSearch }: Props) => {
         onChange={(e) => setSearch(e.target.value)}
       />
 
-      {/* TODO Implement filter by watch status */}
       <div id="selectDiv">
         <span>Group by Status</span>
-        <select name="status" id="status" onChange={(e) => console.log(e.target.value)}>
+        <select
+          name="status"
+          id="status"
+          onChange={(e) => {
+            const val = e.target.value;
+
+            if (val === "All") {
+              setWatchStatusFilter("All");
+            } else {
+              setWatchStatusFilter(val as WatchStatus);
+            }
+          }}
+        >
           <option value="All">All</option>
           {Object.values(WatchStatus).map((status) => (
             <option key={status} value={status}>

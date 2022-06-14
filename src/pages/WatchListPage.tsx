@@ -12,14 +12,18 @@ import { selectUser } from "../features/auth/authSlice";
 import { Status } from "../features/anime/animeSlice";
 import WatchListPageItems from "../components/WatchListPageItems";
 import WatchListPageControls from "../components/WatchListPageControls";
+import { WatchListItem, WatchStatus } from "../api/firebase";
 
 const WatchListPage = () => {
   const [search, setSearch] = useState("");
+  const [watchStatusFilter, setWatchStatusFilter] = useState<
+    "All" | WatchStatus
+  >("All");
   const dispatch = useAppDispatch();
   const user = useSelector(selectUser);
-  const watchList = useSelector(selectWatchList);
-  const watchListStatus = useSelector(selectWatchListStatus);
-  const watchListError = useSelector(selectWatchListError);
+  const watchlist = useSelector(selectWatchList);
+  const watchlistStatus = useSelector(selectWatchListStatus);
+  const watchlistError = useSelector(selectWatchListError);
 
   useEffect(() => {
     if (user) {
@@ -33,27 +37,43 @@ const WatchListPage = () => {
 
   return (
     <StyledWatchListPage>
-      <WatchListPageControls search={search} setSearch={setSearch} />
+      <WatchListPageControls
+        search={search}
+        setSearch={setSearch}
+        watchStatusFilter={watchStatusFilter}
+        setWatchStatusFilter={setWatchStatusFilter}
+      />
       <StyledWatchListContent>
-        {watchListStatus === Status.Loading && watchList === null && (
+        {watchlistStatus === Status.Loading && watchlist === null && (
           <div>Loading...</div>
         )}
-        {watchListStatus === Status.Error && <div>{watchListError}</div>}
-        {(watchListStatus === Status.Success ||
-          (watchListStatus === Status.Loading && watchList)) && (
+        {watchlistStatus === Status.Error && <div>{watchlistError}</div>}
+        {(watchlistStatus === Status.Success ||
+          (watchlistStatus === Status.Loading && watchlist)) && (
           <WatchListPageItems
-            items={
-              search
-                ? watchList!.filter((item) =>
-                    item.title.toLowerCase().includes(search.toLowerCase())
-                  )
-                : watchList!
-            }
+            items={filterWatchListItems(watchlist!, search, watchStatusFilter)}
           />
         )}
       </StyledWatchListContent>
     </StyledWatchListPage>
   );
+};
+
+const filterWatchListItems = (
+  watchlist: WatchListItem[],
+  search: string,
+  watchStatusFilter: "All" | WatchStatus
+): WatchListItem[] => {
+  let copy = [...watchlist];
+
+  if (search)
+    copy = copy.filter((item) =>
+      item.title.toLowerCase().includes(search.toLowerCase())
+    );
+  if (watchStatusFilter !== "All")
+    copy = copy.filter((item) => item.status === watchStatusFilter);
+
+  return copy;
 };
 
 export default WatchListPage;
