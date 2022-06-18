@@ -10,11 +10,10 @@ export type SearchOptions = {
 
 // TODO add search options object
 export const searchAnime = async (options: SearchOptions): Promise<Anime[]> => {
-  
   const query = `
-    query ($title: String, $year: Int) {
+    query ($title: String, $season: MediaSeason, $year: Int) {
       Page(page: 1, perPage: 10) {
-        media(type: ANIME, search: $title, seasonYear: $year, sort: POPULARITY_DESC, format: TV) {
+        media(type: ANIME, search: $title, season: $season, seasonYear: $year, sort: POPULARITY_DESC, format: TV) {
           id
           title {
             romaji
@@ -47,7 +46,6 @@ export const searchAnime = async (options: SearchOptions): Promise<Anime[]> => {
       }
     }    
     `;
-
 
   const response = await queryFetch(query, options);
 
@@ -225,7 +223,7 @@ export const getPopularAnime = async (): Promise<Anime[]> => {
 
 const queryFetch = async (
   query: string,
-  vars: object = {}
+  vars: SearchOptions = {}
 ): Promise<Response> => {
   return fetch(url, {
     method: "POST",

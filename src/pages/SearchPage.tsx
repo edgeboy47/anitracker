@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { SearchOptions } from "../api/anilist";
+import { AnimeSeason } from "../api/anime";
 import { useAppDispatch, useDebounce } from "../app/hooks";
 import AnimeList from "../components/AnimeList";
 import SearchPageOptions from "../components/SearchPageOptions";
@@ -44,6 +45,7 @@ const SearchPage = () => {
     let options: SearchOptions = {};
 
     for (const [key, value] of searchParams.entries()) {
+      // TODO find a way to programmatically set options from search params
       switch (key) {
         case "title":
           options.title = value;
@@ -53,6 +55,10 @@ const SearchPage = () => {
           options.year = parseInt(value);
           break;
 
+        case "season":
+          options.season = value as AnimeSeason;
+          break;
+        
         default:
           break;
       }
@@ -77,8 +83,9 @@ export default SearchPage;
 
 const SearchResults = () => {
   const searchResults = useSelector(selectSearch);
-
+  
   return (
+    // TODO add pagination
     <div>
       {searchResults && searchResults?.length > 0 ? (
         <AnimeList animeList={searchResults} />
