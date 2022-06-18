@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Anime from "../../api/anime";
 import * as client from "../../api/anilist";
 import { RootState } from "../../app/store";
+import { SearchOptions } from "../../api/anilist";
 
 export enum Status {
   Loading = "loading",
@@ -36,11 +37,11 @@ export const getCurrentSeasonalAnime = createAsyncThunk<Anime[]>(
   }
 );
 
-export const searchAnime = createAsyncThunk<Anime[], string>(
+export const searchAnime = createAsyncThunk<Anime[], SearchOptions>(
   "anime/search",
-  async (title: string) => {
+  async (options: SearchOptions) => {
     // TODO add search options object
-    return client.searchAnime(title);
+    return client.searchAnime(options);
   }
 );
 

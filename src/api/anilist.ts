@@ -2,14 +2,19 @@ import Anime, { AnimeSeason, Convert } from "./anime";
 
 const url: string = "https://graphql.anilist.co";
 
+export type SearchOptions = {
+  title?: string;
+  year?: number;
+  season?: AnimeSeason;
+};
+
 // TODO add search options object
-export const searchAnime = async (title: String): Promise<Anime[]> => {
-  if (title.length === 0) return [];
+export const searchAnime = async (options: SearchOptions): Promise<Anime[]> => {
   
   const query = `
-    query ($title: String!) {
+    query ($title: String, $year: Int) {
       Page(page: 1, perPage: 10) {
-        media(type: ANIME, search: $title, sort: POPULARITY_DESC, format: TV) {
+        media(type: ANIME, search: $title, seasonYear: $year, sort: POPULARITY_DESC, format: TV) {
           id
           title {
             romaji
@@ -43,11 +48,8 @@ export const searchAnime = async (title: String): Promise<Anime[]> => {
     }    
     `;
 
-  const vars = {
-    title: title,
-  };
 
-  const response = await queryFetch(query, vars);
+  const response = await queryFetch(query, options);
 
   const data = await response.json();
 

@@ -7,7 +7,6 @@ type Props = {
 };
 
 const WatchListPageItems = ({ items }: Props) => {
-  // TODO: separate cards by status in UI
   return (
     <StyledItems>
       {[...items]

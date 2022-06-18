@@ -1,41 +1,72 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
-import styled from "styled-components";
+import { SearchOptions } from "../api/anilist";
 import { useAppDispatch, useDebounce } from "../app/hooks";
 import AnimeList from "../components/AnimeList";
+import SearchPageOptions from "../components/SearchPageOptions";
 import { searchAnime, selectSearch } from "../features/anime/animeSlice";
 
 const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [title, setTitle] = useState(searchParams.get("title") || "");
-  const debouncedTitle = useDebounce<string>(title);
+  const [searchOptions, setSearchOptions] = useState<SearchOptions>({
+    title: searchParams.get("title") || "",
+  });
+  const debouncedSearchOptions = useDebounce<SearchOptions>(searchOptions);
 
   const dispatch = useAppDispatch();
 
-  // Update search params whenever title changes, uses debounce
+  // Update search params whenever search options change, uses debounce
   useEffect(() => {
-    if (debouncedTitle.length > 0) {
-      setSearchParams({ title: debouncedTitle });
+    // If any of the values are not null
+    if (Object.values(debouncedSearchOptions).some((value) => value)) {
+      setSearchParams(
+        Object.entries(debouncedSearchOptions)
+          .filter(([, value]) => value)
+          .map(([key, value]) => {
+            return [key, value.toString()] as [string, string];
+          })
+      );
     } else {
       setSearchParams({});
     }
-  }, [debouncedTitle, setSearchParams]);
+  }, [debouncedSearchOptions, setSearchParams]);
 
   // Check search params on mount, and dispatch search if any exist
   // Also runs whenever search params are updated
   useEffect(() => {
-    if (searchParams.has("title")) {
-      const title = searchParams.get("title");
-      dispatch(searchAnime(title!));
-    } else {
-      dispatch(searchAnime(""));
+    // if (searchParams.has("title")) {
+    //   const title = searchParams.get("title");
+    //   dispatch(searchAnime(title!));
+    // } else {
+    //   dispatch(searchAnime(""));
+    // }
+    let options: SearchOptions = {};
+
+    for (const [key, value] of searchParams.entries()) {
+      switch (key) {
+        case "title":
+          options.title = value;
+          break;
+
+        case "year":
+          options.year = parseInt(value);
+          break;
+
+        default:
+          break;
+      }
     }
+
+    dispatch(searchAnime(options));
   }, [searchParams, dispatch]);
 
   return (
     <div>
-      <SearchPageOptions value={title} onChange={setTitle} />
+      <SearchPageOptions
+        searchOptions={searchOptions}
+        setSearchOptions={setSearchOptions}
+      />
       <SearchResults />
     </div>
   );
@@ -43,38 +74,6 @@ const SearchPage = () => {
 
 export default SearchPage;
 
-type SearchProps = {
-  value: string;
-  onChange: Function;
-};
-
-const SearchPageOptions = ({ value, onChange }: SearchProps) => {
-  return (
-    <div>
-      <div>
-        <span>Title</span>
-        <StyledInput
-          type="text"
-          name="title"
-          id="title"
-          placeholder="Title"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
-        />
-      </div>
-    </div>
-  );
-};
-
-const StyledInput = styled.input`
-  background: #eff1f7;
-  border-radius: 8px;
-  padding: 1rem;
-  outline: none;
-  border: none;
-  font-size: 1rem;
-  margin: 1rem;
-`;
 
 const SearchResults = () => {
   const searchResults = useSelector(selectSearch);
