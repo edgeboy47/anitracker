@@ -28,6 +28,7 @@ const AnimeListCardControls = ({ anime }: Props) => {
 
   if (!user) return null;
 
+  // TODO show toast notification when operation is pressed
   // If the anime is not in the user's watchlist
   if (user && watchlist && watchlist.some((item) => item.id === anime.id) === false) {
     return (

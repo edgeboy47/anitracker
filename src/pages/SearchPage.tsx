@@ -1,21 +1,19 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { useSearchParams } from "react-router-dom";
 import { SearchOptions } from "../api/anilist";
 import { AnimeSeason } from "../api/anime";
-import { useAppDispatch, useDebounce } from "../app/hooks";
+import { useDebounce } from "../app/hooks";
 import AnimeList from "../components/AnimeList";
 import SearchPageOptions from "../components/SearchPageOptions";
-import { searchAnime, selectSearch } from "../features/anime/animeSlice";
+import { useSearchAnimeQuery } from "../features/anime/animeAPISlice";
 
 const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [searchOptions, setSearchOptions] = useState<SearchOptions>({
     title: searchParams.get("title") || "",
   });
-  const debouncedSearchOptions = useDebounce<SearchOptions>(searchOptions);
 
-  const dispatch = useAppDispatch();
+  const debouncedSearchOptions = useDebounce<SearchOptions>(searchOptions);
 
   // Update search params whenever search options change, uses debounce
   useEffect(() => {
@@ -25,47 +23,13 @@ const SearchPage = () => {
         Object.entries(debouncedSearchOptions)
           .filter(([, value]) => value)
           .map(([key, value]) => {
-            return [key, value.toString()] as [string, string];
+            return [key, value as string] as [string, string];
           })
       );
     } else {
       setSearchParams({});
     }
   }, [debouncedSearchOptions, setSearchParams]);
-
-  // Check search params on mount, and dispatch search if any exist
-  // Also runs whenever search params are updated
-  useEffect(() => {
-    // if (searchParams.has("title")) {
-    //   const title = searchParams.get("title");
-    //   dispatch(searchAnime(title!));
-    // } else {
-    //   dispatch(searchAnime(""));
-    // }
-    let options: SearchOptions = {};
-
-    for (const [key, value] of searchParams.entries()) {
-      // TODO find a way to programmatically set options from search params
-      switch (key) {
-        case "title":
-          options.title = value;
-          break;
-
-        case "year":
-          options.year = parseInt(value);
-          break;
-
-        case "season":
-          options.season = value as AnimeSeason;
-          break;
-        
-        default:
-          break;
-      }
-    }
-
-    dispatch(searchAnime(options));
-  }, [searchParams, dispatch]);
 
   return (
     <div>
@@ -80,15 +44,46 @@ const SearchPage = () => {
 
 export default SearchPage;
 
-
 const SearchResults = () => {
-  const searchResults = useSelector(selectSearch);
-  
+  // TODO switch over to rtk query
+
+  const [searchParams] = useSearchParams();
+  const [searchOptions, setsearchOptions] = useState<SearchOptions>({});
+  const { data: searchResults } = useSearchAnimeQuery(searchOptions);
+
+  // Whenever search params change, send a query with the current options
+  useEffect(() => {
+
+    const options: SearchOptions = {};
+
+    for (const [key, value] of searchParams.entries()) {
+      // TODO find a way to programmatically set options from search params
+      switch (key) {
+        case "title":
+          options.title = value;
+          break;
+
+        case "year":
+          options.year = parseInt(value as string);
+          break;
+
+        case "season":
+          options.season = value as AnimeSeason;
+          break;
+
+        default:
+          break;
+      }
+    }
+
+    setsearchOptions(options);
+  }, [searchParams]);
+
   return (
     // TODO add pagination
     <div>
-      {searchResults && searchResults?.length > 0 ? (
-        <AnimeList animeList={searchResults} />
+      {searchResults && searchResults.Page.media?.length > 0 ? (
+        <AnimeList animeList={searchResults.Page.media} />
       ) : (
         "No Results found"
       )}

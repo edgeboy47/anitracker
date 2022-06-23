@@ -25,7 +25,7 @@ const WatchListPageControls = ({
 
       <div id="selectDiv">
         <span>Group by Status</span>
-        <select
+        <StyledSelect
           name="status"
           id="status"
           onChange={(e) => {
@@ -44,7 +44,7 @@ const WatchListPageControls = ({
               {status}
             </option>
           ))}
-        </select>
+        </StyledSelect>
       </div>
     </StyledWatchListPageControls>
   );
@@ -75,5 +75,15 @@ const StyledWatchListPageControls = styled.aside`
       font-size: 0.875rem;
     }
   }
+`;
+
+const StyledSelect = styled.select`
+  background: #eff1f7;
+  border-radius: 8px;
+  padding: 1rem;
+  outline: none;
+  border: none;
+  font-size: 1rem;
+  margin: 1rem;
 `;
 export default WatchListPageControls;

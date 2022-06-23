@@ -3,14 +3,23 @@ import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../api/firebaseConfig";
 
 import animeReducer from "../features/anime/animeSlice";
-import authReducer, { setUser, reset, UserInterface } from "../features/auth/authSlice";
+import authReducer, {
+  setUser,
+  reset,
+  UserInterface,
+} from "../features/auth/authSlice";
 import watchListReducer from "../features/watchlist/watchlistSlice";
+import { animeApiSlice } from "../features/anime/animeAPISlice";
 
 const store = configureStore({
   reducer: {
     anime: animeReducer,
+    [animeApiSlice.reducerPath]: animeApiSlice.reducer,
     auth: authReducer,
     watchlist: watchListReducer,
+  },
+  middleware: (getDefaultMiddleware) => {
+    return getDefaultMiddleware().concat(animeApiSlice.middleware);
   },
 });
 

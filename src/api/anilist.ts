@@ -8,55 +8,54 @@ export type SearchOptions = {
   season?: AnimeSeason;
 };
 
-// TODO add search options object
-export const searchAnime = async (options: SearchOptions): Promise<Anime[]> => {
-  const query = `
-    query ($title: String, $season: MediaSeason, $year: Int) {
-      Page(page: 1, perPage: 10) {
-        media(type: ANIME, search: $title, season: $season, seasonYear: $year, sort: POPULARITY_DESC, format: TV) {
-          id
-          title {
-            romaji
-            english
-          }
-          bannerImage
-          coverImage {
-            extraLarge
-            large
-            color
-          }
-          season
-          seasonYear
-          description
-          type
-          format
-          status
-          episodes
-          duration
-          genres
-          isAdult
-          averageScore
-          popularity
-          nextAiringEpisode {
-            airingAt
-            timeUntilAiring
-            episode
-          }
-        }
-      }
-    }    
-    `;
+// export const searchAnime = async (options: SearchOptions): Promise<Anime[]> => {
+//   const query = `
+//     query ($title: String, $season: MediaSeason, $year: Int) {
+//       Page(page: 1, perPage: 10) {
+//         media(type: ANIME, search: $title, season: $season, seasonYear: $year, sort: POPULARITY_DESC, format: TV) {
+//           id
+//           title {
+//             romaji
+//             english
+//           }
+//           bannerImage
+//           coverImage {
+//             extraLarge
+//             large
+//             color
+//           }
+//           season
+//           seasonYear
+//           description
+//           type
+//           format
+//           status
+//           episodes
+//           duration
+//           genres
+//           isAdult
+//           averageScore
+//           popularity
+//           nextAiringEpisode {
+//             airingAt
+//             timeUntilAiring
+//             episode
+//           }
+//         }
+//       }
+//     }    
+//     `;
 
-  const response = await queryFetch(query, options);
+//   const response = await queryFetch(query, options);
 
-  const data = await response.json();
+//   const data = await response.json();
 
-  const list = data.data.Page.media.map((anime: object) =>
-    Convert.toAnime(JSON.stringify(anime))
-  ) as Anime[];
+//   const list = data.data.Page.media.map((anime: object) =>
+//     Convert.toAnime(JSON.stringify(anime))
+//   ) as Anime[];
 
-  return list;
-};
+//   return list;
+// };
 
 export const getTrendingAnime = async (): Promise<Anime[]> => {
   const query = `

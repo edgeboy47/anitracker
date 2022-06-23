@@ -2,7 +2,6 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Anime from "../../api/anime";
 import * as client from "../../api/anilist";
 import { RootState } from "../../app/store";
-import { SearchOptions } from "../../api/anilist";
 
 export enum Status {
   Loading = "loading",
@@ -37,14 +36,6 @@ export const getCurrentSeasonalAnime = createAsyncThunk<Anime[]>(
   }
 );
 
-export const searchAnime = createAsyncThunk<Anime[], SearchOptions>(
-  "anime/search",
-  async (options: SearchOptions) => {
-    // TODO add search options object
-    return client.searchAnime(options);
-  }
-);
-
 // Slice
 const animeSlice = createSlice({
   name: "anime",
@@ -67,17 +58,6 @@ const animeSlice = createSlice({
         state.status = Status.Error;
         // state.error = action.error.message;
       })
-      .addCase(searchAnime.pending, (state) => {
-        state.status = Status.Loading;
-      })
-      .addCase(searchAnime.fulfilled, (state, action) => {
-        state.status = Status.Success;
-        state.search = action.payload;
-      })
-      .addCase(searchAnime.rejected, (state, action) => {
-        state.status = Status.Error;
-        state.error = action.error.message ?? "Unknown error";
-      });
   },
 });
 
@@ -85,7 +65,6 @@ const animeSlice = createSlice({
 export const selectSeasonal = (state: RootState) => state.anime.seasonal;
 export const selectTrending = (state: RootState) => state.anime.trending;
 export const selectPopular = (state: RootState) => state.anime.popular;
-export const selectSearch = (state: RootState) => state.anime.search;
 export const selectStatus = (state: RootState) => state.anime.status;
 
 export default animeSlice.reducer;

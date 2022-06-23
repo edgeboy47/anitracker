@@ -9,6 +9,7 @@ type Props = {
 const AnimeListCard = ({ anime }: Props) => {
   return (
     <StyledCard>
+      {/* TODO add onclick to navigate to details page */}
       <img
         src={anime?.coverImage?.large}
         alt={anime.title!.english || anime.title!.romaji}
