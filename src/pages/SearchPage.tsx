@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { SearchOptions } from "../api/anilist";
-import { AnimeSeason } from "../api/anime";
 import { useDebounce } from "../app/hooks";
-import AnimeList from "../components/AnimeList";
 import SearchPageOptions from "../components/SearchPageOptions";
-import { useSearchAnimeQuery } from "../features/anime/animeAPISlice";
+import { SearchPageResults } from "../components/SearchPageResults";
 
 const SearchPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -37,56 +35,10 @@ const SearchPage = () => {
         searchOptions={searchOptions}
         setSearchOptions={setSearchOptions}
       />
-      <SearchResults />
+      <SearchPageResults />
     </div>
   );
 };
 
 export default SearchPage;
 
-const SearchResults = () => {
-  // TODO switch over to rtk query
-
-  const [searchParams] = useSearchParams();
-  const [searchOptions, setsearchOptions] = useState<SearchOptions>({});
-  const { data: searchResults } = useSearchAnimeQuery(searchOptions);
-
-  // Whenever search params change, send a query with the current options
-  useEffect(() => {
-
-    const options: SearchOptions = {};
-
-    for (const [key, value] of searchParams.entries()) {
-      // TODO find a way to programmatically set options from search params
-      switch (key) {
-        case "title":
-          options.title = value;
-          break;
-
-        case "year":
-          options.year = parseInt(value as string);
-          break;
-
-        case "season":
-          options.season = value as AnimeSeason;
-          break;
-
-        default:
-          break;
-      }
-    }
-
-    setsearchOptions(options);
-  }, [searchParams]);
-
-  return (
-    // TODO add pagination
-    <div>
-      {searchResults && searchResults.Page.media?.length > 0 ? (
-        <AnimeList animeList={searchResults.Page.media} />
-      ) : (
-        "No Results found"
-      )}
-    </div>
-  );
-};

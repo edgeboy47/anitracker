@@ -6,8 +6,23 @@ import Anime, { AnimeSeason } from "../../api/anime";
 
 const baseURL: string = "https://graphql.anilist.co";
 
+interface PageInfo {
+  total: number;
+  perPage: number;
+  currentPage: number;
+  lastPage: number;
+  hasNextPage: boolean;
+}
+
 interface APIResponse {
-  Page: { media: Anime[] };
+  Page: {
+    pageInfo: PageInfo,
+    media: Anime[]
+  };
+}
+
+interface PaginatedSearchOptions extends SearchOptions {
+  page: number;
 }
 
 const getCurrentSeason = (): { season: AnimeSeason; seasonYear: number } => {
@@ -33,11 +48,18 @@ export const animeApiSlice = createApi({
     url: baseURL,
   }),
   endpoints: (builder) => ({
-    searchAnime: builder.query<APIResponse, SearchOptions>({
+    searchAnime: builder.query<APIResponse, PaginatedSearchOptions>({
       query: (options) => ({
         document: gql`
-          query ($title: String, $season: MediaSeason, $year: Int) {
-            Page(page: 1, perPage: 10) {
+          query ($title: String, $season: MediaSeason, $year: Int, $page: Int = 1) {
+            Page(page: $page, perPage: 15) {
+              pageInfo {
+                total
+                perPage
+                currentPage
+                lastPage
+                hasNextPage
+              }
               media(
                 type: ANIME
                 search: $title
@@ -135,4 +157,4 @@ export const animeApiSlice = createApi({
   }),
 });
 
-export const { useSearchAnimeQuery } = animeApiSlice;
+export const { useSearchAnimeQuery, useLazySearchAnimeQuery } = animeApiSlice;
