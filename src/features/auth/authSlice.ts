@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../../app/store";
 import * as client from "../../api/firebase";
+import { toast } from "react-toastify";
 
 
 export interface UserInterface {
@@ -57,7 +58,11 @@ export const loginWithGoogle = createAsyncThunk(
 );
 
 export const logout = createAsyncThunk("auth/logout", async () => {
-  return client.logout();
+  const logout = client.logout();
+  toast.success('Logged out successfully', {
+    position: toast.POSITION.TOP_CENTER,
+  })
+  return logout;
 });
 
 // Slice

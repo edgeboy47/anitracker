@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import Anime from "../../api/anime";
 import * as client from "../../api/firebase";
 import { WatchListItem, WatchStatus } from "../../api/firebase";
@@ -29,21 +30,37 @@ export const addToWatchList = createAsyncThunk<
   WatchListItem | undefined,
   { userID: string; anime: Anime; status: WatchStatus }
 >("watchlist/addtouserwatchlist", async ({ userID, anime, status }) => {
-  return client.addToWatchList(userID, anime, status);
+  const item = await client.addToWatchList(userID, anime, status);
+  if (item) {
+    toast.success(`${anime.title?.english} added to ${status.toString()} list`);
+  }
+
+  return item;
 });
 
 export const updateWatchListEntry = createAsyncThunk<
   WatchListItem | undefined,
   { userID: string; anime: Anime; status: WatchStatus }
 >("watchlist/updatewatchlistentry", async ({ userID, anime, status }) => {
-  return client.updateWatchListEntry(userID, anime, status);
+  const item = await client.updateWatchListEntry(userID, anime, status);
+
+  if (item) {
+    toast.success(`${anime.title?.english} added to ${status.toString()} list`);
+  }
+
+  return item;
 });
 
 export const removeFromWatchList = createAsyncThunk<
   number | undefined,
   { userID: string; animeID: number }
 >("watchlist/removefromuserwatchlist", async ({ userID, animeID }) => {
-  return client.removeFromWatchList(userID, animeID);
+  const item = await client.removeFromWatchList(userID, animeID);
+  if (item) {
+    toast.success(`List entry deleted`);
+  }
+
+  return item;
 });
 
 // Slice
@@ -91,8 +108,7 @@ const watchListSlice = createSlice({
                 return action.payload;
               return item;
             });
-          }
-          else state.watchlist = [action.payload];
+          } else state.watchlist = [action.payload];
         }
       })
       .addCase(updateWatchListEntry.rejected, (state, action) => {

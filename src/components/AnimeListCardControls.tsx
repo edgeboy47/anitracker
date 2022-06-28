@@ -24,7 +24,6 @@ const AnimeListCardControls = ({ anime }: Props) => {
   const user = useSelector(selectUser);
   const dispatch = useAppDispatch();
   const watchlist = useSelector(selectWatchList);
-  const [isDisabled, setIsDisabled] = useState(false);
 
   if (!user) return null;
 
