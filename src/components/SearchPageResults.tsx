@@ -5,6 +5,7 @@ import { SearchOptions } from "../api/anilist";
 import { AnimeSeason } from "../api/anime";
 import { useInfiniteSearchAnimeQuery } from "../app/hooks";
 import AnimeList from "./AnimeList";
+import PlaceholderAnimeList from "./PlaceholderAnimeList";
 
 export const SearchPageResults = () => {
   const [searchParams] = useSearchParams();
@@ -23,7 +24,7 @@ export const SearchPageResults = () => {
     (entries) => {
       const [target] = entries;
       if (target.isIntersecting && !isFetching && isSuccess && searchResults) {
-        console.log('observed')
+        console.log("observed");
         fetchNextPage();
       }
     },
@@ -75,11 +76,9 @@ export const SearchPageResults = () => {
     // TODO add pagination
     <SearchResults>
       <Results>
-        {isSuccess && searchResults.length > 0 ? (
-          <AnimeList animeList={searchResults} />
-        ) : (
-          "No Results found"
-        )}
+        <AnimeList animeList={searchResults} />
+
+        {isFetching && <PlaceholderAnimeList />}
       </Results>
       <div id="observer" ref={observerRef}></div>
     </SearchResults>

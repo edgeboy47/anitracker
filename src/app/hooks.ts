@@ -55,7 +55,7 @@ export const useInfiniteSearchAnimeQuery = (options: SearchOptions) => {
       setResults(result.data.Page.media);
       shouldReset.current = false
     } else {
-      setResults((prev) => prev.concat(...result.data.Page.media));
+      setResults((prev) => [...new Set(prev.concat(...result.data.Page.media))]);
     }
   }, [result.data, result.isSuccess, result.isFetching]);
 

@@ -25,6 +25,7 @@ const StyledCard = styled.div`
   display: flex;
   flex-direction: column;
   width: 200px;
+  height: 360px;
   position: relative;
 
   :hover .mainIcon > div {
