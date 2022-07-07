@@ -39,7 +39,7 @@ const StyledSearch = styled.div`
   padding: 1rem;
   background: #eff1f7;
   border-radius: 8px;
-  max-width: 80%;
+  width: min(80%, 1500px);
   margin: 2rem auto;
   display: flex;
   align-items: center;
@@ -49,13 +49,20 @@ const StyledSearch = styled.div`
     margin-right: 2rem;
     cursor: pointer;
   }
+
+  @media (max-width: 768px) {
+    svg {
+      display: none;
+    }
+  }
 `;
 
 const StyledInput = styled.input`
   outline: none;
+  max-width: 100%;
   border: none;
   padding: 0.5rem;
-  font-size: 1rem;
+  font-size: clamp(0.5rem, 0.5rem + 1vw, 1rem);
   font-weight: 400;
   background: inherit;
   flex: 1;

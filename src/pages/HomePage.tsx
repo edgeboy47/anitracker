@@ -74,4 +74,5 @@ export const HomePage = () => {
 
 const StyledTitle = styled.h1`
   font-weight: bold;
+  font-size: clamp(1rem, 1rem + 1.5vw, 2rem);
 `;
