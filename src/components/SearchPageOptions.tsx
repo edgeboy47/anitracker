@@ -82,7 +82,7 @@ const SearchPageOptionsContainer = styled.div`
 `;
 
 const StyledInput = styled.input`
-  background: #eff1f7;
+  background: #fff;
   border-radius: 8px;
   padding: 1rem;
   outline: none;
@@ -92,7 +92,7 @@ const StyledInput = styled.input`
 `;
 
 const StyledSelect = styled.select`
-  background: #eff1f7;
+  background: #fff;
   border-radius: 8px;
   padding: 1rem;
   outline: none;

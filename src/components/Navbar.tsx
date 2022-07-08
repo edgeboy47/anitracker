@@ -28,12 +28,14 @@ export const Navbar = () => {
   return (
     <StyledNavbar>
       <Logo>
-        <Link to="/">AniTracker</Link>
+        <Link to="/" onClick={() => setIsOpen(false)}>
+          AniTracker
+        </Link>
       </Logo>
       <HamburgerMenu onClick={() => setIsOpen((prev) => !prev)}>
         <MdMenu />
       </HamburgerMenu>
-      <NavItems isOpen={isOpen}>
+      <NavItems isOpen={isOpen} onClick={() => setIsOpen(false)}>
         <Link to="/search">
           <StyledNavbarButton>Search</StyledNavbarButton>
         </Link>
@@ -112,7 +114,7 @@ const HamburgerMenu = styled.div`
     width: 24px;
     height: 24px;
     color: #2e51a2;
-  } 
+  }
 
   @media screen and (max-width: 500px) {
     display: block;

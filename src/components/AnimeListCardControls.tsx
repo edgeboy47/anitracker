@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { AiFillCalendar, AiFillEdit, AiOutlinePlus } from "react-icons/ai";
 import { MdCheck } from "react-icons/md";
 import { IoMdPlay } from "react-icons/io";
@@ -196,7 +195,7 @@ const StyledControls = styled.div`
 
 const ControlsContainer = styled.div`
   position: absolute;
-  bottom: 0;
+  bottom: 56px;
   right: 0;
   display: flex;
   flex-direction: column-reverse;

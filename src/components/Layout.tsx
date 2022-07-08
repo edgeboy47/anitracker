@@ -34,4 +34,5 @@ const StyledLayout = styled.div<LayoutProps>`
   transition: opacity ease-in 200ms;
   max-width: 100vw;
   min-height: 100vh;
+  background: #eff1f7;
 `

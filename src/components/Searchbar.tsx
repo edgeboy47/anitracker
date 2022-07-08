@@ -37,9 +37,9 @@ export default Searchbar;
 
 const StyledSearch = styled.div`
   padding: 1rem;
-  background: #eff1f7;
+  background: #fff;
   border-radius: 8px;
-  width: min(80%, 1500px);
+  width: min(100%, 1500px);
   margin: 2rem auto;
   display: flex;
   align-items: center;
