@@ -45,6 +45,11 @@ const SearchPage = () => {
     }
   }, [debouncedSearchOptions, setSearchParams]);
 
+  // Set page title on mount
+  useEffect(() => {
+    document.title = "Search Anime";
+  }, []);
+
   return (
     <div>
       <SearchPageOptions

@@ -53,12 +53,13 @@ const WatchListPageControls = ({
 const StyledWatchListPageControls = styled.aside`
   display: flex;
   flex-direction: column;
+  align-items: center;
   font: inherit;
   gap: 1rem;
   padding: 1rem;
 
   input {
-    background: #eff1f7;
+    background: #fff;
     border-radius: 8px;
     padding: 1rem;
     outline: none;
@@ -70,7 +71,7 @@ const StyledWatchListPageControls = styled.aside`
     display: flex;
     gap: 0.5rem;
     flex-direction: column;
-
+    width: 100%;
     span {
       font-size: 0.875rem;
     }
@@ -78,12 +79,11 @@ const StyledWatchListPageControls = styled.aside`
 `;
 
 const StyledSelect = styled.select`
-  background: #eff1f7;
+  background: #fff;
   border-radius: 8px;
   padding: 1rem;
   outline: none;
   border: none;
   font-size: 1rem;
-  margin: 1rem;
 `;
 export default WatchListPageControls;

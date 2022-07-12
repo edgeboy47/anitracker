@@ -15,6 +15,6 @@ const StyledHeader = styled.header`
   font-weight: 700;
   font-size: clamp(1.125rem, 0.75rem + 1.5vw, 2rem);
   padding: 1rem;
-  width: min(100%, 2000px);
+  width: min(100%, 1500px);
   margin: 0 auto;
 `;

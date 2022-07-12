@@ -29,6 +29,11 @@ const LoginPage = () => {
     }
   }, [dispatch, user, navigate, isSuccess]);
 
+  // Set page title on mount
+  useEffect(() => {
+    document.title = "Login";
+  }, []);
+  
   return (
     <StyledLoginPage>
       <StyledLoginBox>

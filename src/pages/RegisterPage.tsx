@@ -24,6 +24,11 @@ const RegisterPage = () => {
     }
   }, [dispatch, user, navigate, isSuccess])
 
+  // Set page title on mount
+  useEffect(() => {
+    document.title = "Register";
+  }, []);
+
   return (
     <StyledRegisterPage>
       <StyledRegisterBox>

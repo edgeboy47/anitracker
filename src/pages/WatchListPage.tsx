@@ -16,6 +16,11 @@ const WatchListPage = () => {
   const dispatch = useAppDispatch();
   const user = useSelector(selectUser);
 
+  // Set page title on mount
+  useEffect(() => {
+    document.title = "Watch List";
+  }, []);
+
   useEffect(() => {
     if (user) {
       dispatch(getUserWatchList(user.uid));

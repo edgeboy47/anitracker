@@ -42,6 +42,11 @@ export const HomePage = () => {
     }
   }, [dispatch, user, watchlist]);
 
+  // Set page title on mount
+  useEffect(() => {
+    document.title = "Anitracker";
+  }, []);
+
   const renderFromStatus = (status: Status): JSX.Element => {
     let element = <div>Loading...</div>;
 

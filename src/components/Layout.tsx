@@ -20,7 +20,7 @@ export const Layout = () => {
 
 const StyledOutlet = styled.main`
   padding: 0 2rem;
-  max-width: 2000px;
+  max-width: 1500px;
   margin: 0 auto;
 `;
 

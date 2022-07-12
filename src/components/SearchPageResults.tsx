@@ -98,4 +98,5 @@ const SearchResults = styled.div`
 const Results = styled.div`
   height: max-content;
   min-height: 90vh;
+  max-width: 100vw;
 `;

@@ -17,7 +17,6 @@ const AnimeListCard = ({ anime }: Props) => {
         />
       </div>
       <AnimeListCardControls anime={anime} />
-      {/* TODO text label is causing inconsistent image heights, need to make label heights the same */}
       <AnimeListCardTitle>
         {anime.title!.english || anime.title!.romaji}
       </AnimeListCardTitle>
