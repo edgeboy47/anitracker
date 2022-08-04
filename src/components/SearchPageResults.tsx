@@ -63,6 +63,10 @@ export const SearchPageResults = () => {
         case "season":
           options.season = value as AnimeSeason;
           break;
+        
+        case "genre":
+          options.genre = value;
+          break;
 
         default:
           break;

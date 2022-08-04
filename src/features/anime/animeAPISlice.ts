@@ -2,7 +2,7 @@ import { createApi } from "@reduxjs/toolkit/query/react";
 import { graphqlRequestBaseQuery } from "@rtk-query/graphql-request-base-query";
 import { gql } from "graphql-request";
 import { SearchOptions } from "../../api/anilist";
-import Anime, { AnimeSeason } from "../../api/anime";
+import Anime, { AnimeSeason, Genre } from "../../api/anime";
 
 const baseURL: string = "https://graphql.anilist.co";
 
@@ -16,8 +16,8 @@ interface PageInfo {
 
 interface APIResponse {
   Page: {
-    pageInfo: PageInfo,
-    media: Anime[]
+    pageInfo: PageInfo;
+    media: Anime[];
   };
 }
 
@@ -51,7 +51,13 @@ export const animeApiSlice = createApi({
     searchAnime: builder.query<APIResponse, PaginatedSearchOptions>({
       query: (options) => ({
         document: gql`
-          query ($title: String, $season: MediaSeason, $year: Int, $page: Int = 1) {
+          query (
+            $title: String
+            $season: MediaSeason
+            $year: Int
+            $page: Int = 1
+            $genre: String
+          ) {
             Page(page: $page, perPage: 15) {
               pageInfo {
                 total
@@ -64,6 +70,7 @@ export const animeApiSlice = createApi({
                 type: ANIME
                 search: $title
                 season: $season
+                genre: $genre
                 seasonYear: $year
                 sort: POPULARITY_DESC
                 format: TV
@@ -154,7 +161,24 @@ export const animeApiSlice = createApi({
         };
       },
     }),
+    getGenres: builder.query<Genre[], void>({
+      query: () => ({
+        document: gql`
+          query {
+            genres: GenreCollection
+          }
+        `,
+      }),
+      transformResponse: (response: { genres: String[] }) =>
+        response.genres.map((genre) => {
+          return { genre } as Genre;
+        }),
+    }),
   }),
 });
 
-export const { useSearchAnimeQuery, useLazySearchAnimeQuery } = animeApiSlice;
+export const {
+  useSearchAnimeQuery,
+  useLazySearchAnimeQuery,
+  useGetGenresQuery,
+} = animeApiSlice;

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import { SearchOptions } from "../api/anilist";
 import { AnimeSeason } from "../api/anime";
+import { useGetGenresQuery } from "../features/anime/animeAPISlice";
 
 type SearchProps = {
   searchOptions: SearchOptions;
@@ -11,9 +12,11 @@ const SearchPageOptions = ({
   searchOptions,
   setSearchOptions,
 }: SearchProps) => {
+  const { data: genres } = useGetGenresQuery();
+
   return (
     <SearchPageOptionsContainer>
-      <div>
+      <StyledInputContainer>
         <span>Title</span>
         <StyledInput
           type="text"
@@ -28,8 +31,8 @@ const SearchPageOptions = ({
             }))
           }
         />
-      </div>
-      <div>
+      </StyledInputContainer>
+      <StyledInputContainer>
         <span>Year</span>
         <StyledInput
           type="number"
@@ -45,8 +48,8 @@ const SearchPageOptions = ({
             }))
           }
         />
-      </div>
-      <div>
+      </StyledInputContainer>
+      <StyledInputContainer>
         <span>Season</span>
         <StyledSelect
           name="status"
@@ -72,13 +75,54 @@ const SearchPageOptions = ({
             </option>
           ))}
         </StyledSelect>
-      </div>
+      </StyledInputContainer>
+      <StyledInputContainer>
+        <span>Genre</span>
+        <StyledSelect
+          name="genre"
+          id="genre"
+          onChange={(e) => {
+            const val = e.target.value;
+
+            if (val === "All") {
+              setSearchOptions((prevOptions) => ({
+                ...prevOptions,
+                genre: undefined,
+              }));
+            } else {
+              setSearchOptions((prevOptions) => ({
+                ...prevOptions,
+                genre: val,
+              }));
+            }
+          }}
+        >
+          <option value="All">All</option>
+          {genres &&
+            genres.map((genre) => (
+              <option key={genre.genre} value={genre.genre}>
+                {genre.genre}
+              </option>
+            ))}
+        </StyledSelect>
+      </StyledInputContainer>
     </SearchPageOptionsContainer>
   );
 };
 
 const SearchPageOptionsContainer = styled.div`
   display: flex;
+  gap: 2em;
+`;
+
+const StyledInputContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+
+  span {
+    font-weight: 500;
+  }
 `;
 
 const StyledInput = styled.input`
@@ -88,7 +132,7 @@ const StyledInput = styled.input`
   outline: none;
   border: none;
   font-size: 1rem;
-  margin: 1rem;
+  margin-block: 1rem;
 `;
 
 const StyledSelect = styled.select`
@@ -98,6 +142,6 @@ const StyledSelect = styled.select`
   outline: none;
   border: none;
   font-size: 1rem;
-  margin: 1rem;
+  margin-block: 1rem;
 `;
 export default SearchPageOptions;
