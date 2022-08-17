@@ -1,15 +1,14 @@
-import { WatchStatus } from "../api/firebase";
+import { FilterOptions } from "../pages/WatchListPage";
 import WatchListItemsWithStatus from "./WatchListItemsWithStatus";
 import WatchListPageAllItems from "./WatchListPageAllItems";
 
 type Props = {
-  status: "All" | WatchStatus;
-  search: string;
+  filterOptions: FilterOptions
 };
-const WatchListStatusSuccess = ({ search, status }: Props) => {
-  if (status === "All") {
-    return <WatchListPageAllItems search={search} />;
+const WatchListStatusSuccess = ({ filterOptions }: Props) => {
+  if (filterOptions.status === undefined) {
+    return <WatchListPageAllItems filterOptions={filterOptions} />;
   }
-  return <WatchListItemsWithStatus search={search} status={status} />;
+  return <WatchListItemsWithStatus filterOptions={filterOptions} status={filterOptions.status} />;
 };
 export default WatchListStatusSuccess;

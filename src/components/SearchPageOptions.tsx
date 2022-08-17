@@ -62,8 +62,8 @@ const SearchPageOptions = ({
         <StyledInputContainer>
           <span>Season</span>
           <StyledSelect
-            name="status"
-            id="status"
+            name="season"
+            id="season"
             onChange={(e) => {
               if (e.target.value === "All") {
                 setSearchOptions((prevOptions) => ({
@@ -125,14 +125,13 @@ const SearchPageOptionsContainer = styled.div`
   display: flex;
   gap: 2em;
 
-  /* TODO: set secondary options hidden, show extra options button and set main title input to 100% width */
   @media screen and (max-width: 950px) {
     gap: 1em;
     flex-direction: column;
   }
 `;
 
-const StyledInputContainer = styled.div`
+export const StyledInputContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: start;
@@ -142,7 +141,7 @@ const StyledInputContainer = styled.div`
   }
 `;
 
-const StyledInput = styled.input`
+export const StyledInput = styled.input`
   background: #fff;
   border-radius: 8px;
   padding: 1rem;
@@ -152,7 +151,7 @@ const StyledInput = styled.input`
   margin-block: 1rem;
 `;
 
-const StyledSelect = styled.select`
+export const StyledSelect = styled.select`
   background: #fff;
   border-radius: 8px;
   padding: 1rem;
@@ -162,7 +161,7 @@ const StyledSelect = styled.select`
   margin-block: 1rem;
 `;
 
-const MainSearchOption = styled.div`
+export const MainSearchOption = styled.div`
   @media screen and (max-width: 950px) {
     display: flex;
     width: 100%;
@@ -181,7 +180,7 @@ interface NavProps {
   isOpen: boolean;
 }
 
-const SecondarySearchOptions = styled.div<NavProps>`
+export const SecondarySearchOptions = styled.div<NavProps>`
   display: flex;
   gap: 2em;
 
@@ -204,7 +203,7 @@ const SecondarySearchOptions = styled.div<NavProps>`
   }
 `;
 
-const ExtraOptionsButton = styled.div`
+export const ExtraOptionsButton = styled.div`
   display: none;
   background: white;
   border-radius: 8px;

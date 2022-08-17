@@ -43,6 +43,9 @@ export interface WatchListItem {
   title: string;
   imageURL: string;
   status: WatchStatus;
+  genres: string[];
+  year: number;
+  season: string;
 }
 
 // AUTH functions
@@ -129,6 +132,9 @@ export const getUserWatchList = async (userID: string) => {
         title: doc.data().title,
         imageURL: doc.data().imageURL,
         status: doc.data().status,
+        season: doc.data().season,
+        year: doc.data().year,
+        genres: doc.data().genres,
       };
 
       return item;
@@ -156,6 +162,9 @@ export const addToWatchList = async (
       title: anime.title?.romaji!,
       imageURL: anime.coverImage?.extraLarge!,
       status,
+      season: anime.season!,
+      year: anime.seasonYear!,
+      genres: anime.genres!
     };
 
     await setDoc(doc(userList, `/${anime.id!}`), item);
@@ -184,6 +193,9 @@ export const updateWatchListEntry = async (
       title: anime.title?.romaji!,
       imageURL: anime.coverImage?.extraLarge!,
       status,
+      season: anime.season!,
+      year: anime.seasonYear!,
+      genres: anime.genres!
     };
   } catch (e) {
     console.log("Error updating watch list entry:", e);

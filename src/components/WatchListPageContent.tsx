@@ -7,14 +7,14 @@ import {
   selectWatchListStatus,
   selectWatchListError,
 } from "../features/watchlist/watchlistSlice";
+import { FilterOptions } from "../pages/WatchListPage";
 import WatchListStatusSuccess from "./WatchListStatusSuccess";
 
 type Props = {
-  search: string;
-  watchStatusFilter: "All" | WatchStatus;
+  filterOptions: FilterOptions
 };
 
-const WatchListPageContent = ({ search, watchStatusFilter }: Props) => {
+const WatchListPageContent = ({ filterOptions }: Props) => {
   const watchlist = useSelector(selectWatchList);
   const watchlistStatus = useSelector(selectWatchListStatus);
   const watchlistError = useSelector(selectWatchListError);
@@ -27,7 +27,7 @@ const WatchListPageContent = ({ search, watchStatusFilter }: Props) => {
       {watchlistStatus === Status.Error && <div>{watchlistError}</div>}
       {(watchlistStatus === Status.Success ||
         (watchlistStatus === Status.Loading && watchlist)) && (
-        <WatchListStatusSuccess search={search} status={watchStatusFilter} />
+        <WatchListStatusSuccess filterOptions={filterOptions} />
       )}
     </StyledWatchListContent>
   );

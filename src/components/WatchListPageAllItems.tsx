@@ -1,11 +1,12 @@
 import styled from "styled-components";
 import { WatchStatus } from "../api/firebase";
+import { FilterOptions } from "../pages/WatchListPage";
 import WatchListItemsWithStatus from "./WatchListItemsWithStatus";
 
 type Props = {
-  search: string;
+  filterOptions: FilterOptions;
 };
-const WatchListPageAllItems = ({ search }: Props) => {
+const WatchListPageAllItems = ({ filterOptions }: Props) => {
   return (
     <AllItems>
       {Object.values(WatchStatus).map((status) => {
@@ -13,7 +14,7 @@ const WatchListPageAllItems = ({ search }: Props) => {
           <WatchListItemsWithStatus
             key={status}
             status={status}
-            search={search}
+            filterOptions={filterOptions}
           />
         );
       })}

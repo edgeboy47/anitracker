@@ -7,12 +7,18 @@ import { selectUser } from "../features/auth/authSlice";
 import WatchListPageControls from "../components/WatchListPageControls";
 import { WatchStatus } from "../api/firebase";
 import WatchListPageContent from "../components/WatchListPageContent";
+import { AnimeSeason } from "../api/anime";
+
+export type FilterOptions = {
+  status?: WatchStatus;
+  title?: string;
+  year?: number;
+  season?: AnimeSeason;
+  genre?: string;
+}
 
 const WatchListPage = () => {
-  const [search, setSearch] = useState("");
-  const [watchStatusFilter, setWatchStatusFilter] = useState<
-    "All" | WatchStatus
-  >("All");
+  const [filterOptions, setFilterOptions] = useState<FilterOptions>({});
   const dispatch = useAppDispatch();
   const user = useSelector(selectUser);
 
@@ -34,14 +40,11 @@ const WatchListPage = () => {
   return (
     <StyledWatchListPage>
       <WatchListPageControls
-        search={search}
-        setSearch={setSearch}
-        watchStatusFilter={watchStatusFilter}
-        setWatchStatusFilter={setWatchStatusFilter}
+        filterOptions={filterOptions}
+        setFilterOptions = {setFilterOptions}
       />
       <WatchListPageContent
-        search={search}
-        watchStatusFilter={watchStatusFilter}
+        filterOptions={filterOptions}
       />
     </StyledWatchListPage>
   );
@@ -53,4 +56,10 @@ const StyledWatchListPage = styled.section`
   display: grid;
   gap: 2rem;
   grid-template-columns: auto 1fr;
+  padding-top: 1rem;
+
+  @media screen and (max-width: 950px){
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;
+  }
 `;
